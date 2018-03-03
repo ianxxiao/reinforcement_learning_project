@@ -6,7 +6,7 @@ under development with basic features.
 ### Key Features
 
 1) **main.py**
-This is the main workflow of initializing and training a RL agent and collecting analytics insights for reporting.
+This is the main workflow of initializing and training a RL agent and collecting analytics insights for debugging or reporting.
 
 How to run: python main.py
 
