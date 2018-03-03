@@ -1,7 +1,10 @@
 ### Overview
 
-We try to develop an intelligent agent to re-balance shared bikes using Reinforcement Learning and CitiBike data. The current version is still 
-under development with basic features. 
+We try to develop an intelligent agent to re-balance shared bikes using Reinforcement Learning and CitiBike data. Bike accumulates or depletes at certain popular locations. Companies, such as CitiBike, spend lots of effort and money to manage bike stock at each station to ensure availability to riders throughout the day. This operaiton is currently orchestrated by human operators. 
+
+We aim to develop an computer agent to be able to decide how many bikes to move and to where without hard coding any rules. The only thing we specify is the reward, which the agent will receive if it manages to keep the number of bikes to be less than 50 at the end of each day. If we are successful, this is one step closer to creating a true smart city powered by Artificial Intelligence. 
+
+The current version is still under development with basic features and some known issues. 
 
 ### Key Features
 
