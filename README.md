@@ -27,4 +27,4 @@ following method:
     3) check_if_state_exist(): this check if a state exist based on environment feedback; create new state if it does not exist
     
 ### Known Issues Under Investigation
-- success ratio (# of simulation with less than 50 bikes at hour 23 / total simulation) decreases as total simulation episode increases
+- success ratio (# of simulation with less than 50 bikes at hour 23 / total simulation) decreases as total simulation episode increases; ideally it should increase if the agent is learning properly
