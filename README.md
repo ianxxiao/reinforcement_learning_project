@@ -36,3 +36,4 @@ This script is for creating a RL agent class object. This object has the followi
     2) learn(): this updates the Q(s,a) table
     3) check_if_state_exist(): this check if a state exist based on environment feedback; create new state if it does not exist
     4) print_q_table(): this prints the Q Table for debugging purposes
+    5) export_q_table(): this export the Q Table to a csv to a local folder
