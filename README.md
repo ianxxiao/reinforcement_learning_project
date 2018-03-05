@@ -28,7 +28,7 @@ The current version only has basic mechanics and is still under development with
 
 The agent was able to limit bikes under 50 more oftern after interacting with the environment more.
 
-**Figure 1**: Comparison of success ratio as the number of interaction increases
+**Figure 1**: Comparison of success ratio as the number of interaction increases. The success ratio is defined as % of times when the agent limited bikes to be equal or less than 50.
 
 ![image](/result_snapshot/session_success_rate_2018-03-05101044410867.png)
 
