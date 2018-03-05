@@ -26,7 +26,7 @@ The current version only has basic mechanics and is still under development with
 ---
 ### Preliminary Results and Baseline
 
-![image](https://github.com/ianxxiao/reinforcement_learning_project/raw/master/result_snapshot/q_table_explaination.png)
+![image](./reinforcement_learning_project/result_snapshot/action_history_220180305223236794486.png)
 
 ---
 
