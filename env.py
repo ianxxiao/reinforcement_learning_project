@@ -61,12 +61,13 @@ class env():
         
         if action != 0:
             self.update_stock(action)
+            self.reward = 0.1*action
         
         if self.current_hour == 23:
             if self.bike_stock[self.current_hour] <= 50:
-                self.reward = 5
+                self.reward = 10
             else: 
-                self.reward = -1
+                self.reward = -10
             self.done = True
             self.new_stock = 'terminal'
         
@@ -121,3 +122,7 @@ class env():
         self.bike_moved = 0
         self.old_stock = self.bike_stock[0]
         self.new_stock = 0
+        
+    def current_stock(self):
+        
+        return self.bike_stock[self.current_hour]

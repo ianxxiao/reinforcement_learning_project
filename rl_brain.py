@@ -20,34 +20,55 @@ import pandas as pd
 class agent():
     
     
-    def __init__(self, epsilon, lr, gamma, debug):
+    def __init__(self, epsilon, lr, gamma, current_stock, debug):
         
         print("Created an Agent ...")
-        self.actions = [-3, -1, 0]
+        self.actions = [-10, -3, -1, 0]
         self.reward = 0
         self.epsilon = epsilon
         self.lr = lr
         self.gamma = gamma
         self.q_table = pd.DataFrame(columns = self.actions, dtype = np.float64)
         self.debug = debug
+        self.current_stock = current_stock
         
-    def choose_action(self, observation):
+    def choose_action(self, s):
+        '''
+        This funciton choose an action based on Q Table. It also does 
+        validation to ensure stock will not be negative after moving bikes.
+        Input: 
+            - s: current bike stock
+        Output:
+            - action: number of bikes to move
         
-        self.check_state_exist(observation)
+        '''
+        self.check_state_exist(s)
         
+        # find valid action based on current stock 
+        # cannot pick an action that lead to negative stock
+        valid_state_action = self.find_valid_action(self.q_table.loc[s, :])
+                
         if np.random.uniform() < self.epsilon:
-            # choose the best action given a state
-            state_action = self.q_table.loc[observation, :]
-            #state_action = state_action.reindex(np.random.permutation(state_action))
-            action = state_action.idxmax()  
+                        
+            try:
+                # find the action with the highest expected reward
+                action = valid_state_action.idxmax()
             
+            except:
+                # if action list is null, default to 0
+                action = 0
+                        
             if self.debug == True:
-                print(state_action)
                 print("Decided to Move: {}".format(action))
                         
         else:
+            
             # randomly choose an action
-            action = np.random.choice(self.actions)
+            # re-pick if the action leads to negative stock
+            try:
+                action = np.random.choice(valid_state_action.index)
+            except:
+                action = 0
             
             if self.debug == True:
                 print("Randomly Move: {}".format(action))
@@ -55,6 +76,17 @@ class agent():
         return action
     
     def learn(self, s, a, r, s_):
+        
+        '''
+        This function updates Q tables after each interaction with the
+        environment.
+        Input: 
+            - s: current bike stock
+            - a: current action (number of bikes to move)
+            - r: reward received from current state
+            - s_: new bike stock based on bike moved and new stock
+        Output: None
+        '''
         
         if self.debug == True:
             print("Moved Bikes: {}".format(a))
@@ -66,16 +98,22 @@ class agent():
         q_predict = self.q_table.loc[s, a]
         
         if s_ != 'terminal':
-           
+            
+            # Updated Q Target Value if it is not end of day  
             q_target = r + self.gamma * self.q_table.loc[s_, :].max()
+        
         else:
+            
+            # Update Q Target Value as Immediate reward if end of day
             q_target = r
             
         self.q_table.loc[s, a] += self.lr * (q_target - q_predict)
         
-        return 0
+        return
     
     def check_state_exist(self, state):
+        
+        # Add a new row with state value as index if not exist
         
         if state not in self.q_table.index:
             
@@ -89,7 +127,34 @@ class agent():
         
         return
 
-
+    def find_valid_action(self, state_action):
+        
+        '''
+        This function check the validity acitons in a given state.
+        Input: 
+            - state_action: the current state under consideration
+        Output:
+            - state_action: a pandas Series with only the valid actions that
+                            will not cause negative stock
+        '''
+        
+        # remove action that will stock to be negative
+        
+        for action in self.actions:
+            if self.current_stock + action < 0:
+                
+                if self.debug == True:
+                    print("Drop action {}, current stock {}".format(action, self.current_stock))
+                
+                state_action.drop(index = action, inplace = True)
+        
+        return state_action
+        
+    
     def print_q_table(self):
         
         print(self.q_table)
+    
+    def export_q_table(self, eps, time):
+        
+        self.q_table.to_csv("./q_table/q_table_"+str(eps)+"_"+str(time)+".csv")
