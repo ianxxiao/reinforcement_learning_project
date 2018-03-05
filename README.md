@@ -26,7 +26,7 @@ The current version only has basic mechanics and is still under development with
 ---
 ### Preliminary Results and Baseline
 
-![image](./reinforcement_learning_project/result_snapshot/action_history_220180305223236794486.png)
+![image](/result_snapshot/action_history_220180305223236794486.png)
 
 ---
 
