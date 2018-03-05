@@ -27,15 +27,21 @@ The current version only has basic mechanics and is still under development with
 ### Preliminary Results and Baseline
 
 The agent was able to limit bikes under 50 more oftern after interacting with the environment more.
+
 **Figure 1**: Comparison of success ratio as the number of interaction increases
+
 ![image](/result_snapshot/session_success_rate_2018-03-05101044410867.png)
 
 The agent was being more strategic when moving bikes out of stations after 2000 interactions.
+
 **Figure 2**: Bike moving comparison between training episode 0 and 2000
+
 ![image](/result_snapshot/action_history_220180305223236794486.png)
 
 The agent choose its action based on an intuitive Q Table it developed **independently** without active human programming.
+
 **Figure 3**: Heatmap of expected reward of an action when given certain bike stocks
+
 ![image](/result_snapshot/q_table_explaination.png)
 
 ---
