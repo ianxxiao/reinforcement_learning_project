@@ -37,3 +37,12 @@ This script is for creating a RL agent class object. This object has the followi
     3) check_if_state_exist(): this check if a state exist based on environment feedback; create new state if it does not exist
     4) print_q_table(): this prints the Q Table for debugging purposes
     5) export_q_table(): this export the Q Table to a csv to a local folder
+    
+4) **training.py**
+This script is for creating a trainer class. It has the following methods:
+    1) start(): this initiate a training session with all necessary properties
+    2) train_operator(): this runs a training session with environment and RL agent objects
+    3) get_timestamp(): this returns a time stamp for logging purposes
+    4) cal_performance(): this calculates detailed performance metrics after each training session
+    5) save_session_results(): this saves all performance report assets
+    6) reset_episode_action_history: this is a helper function for performance tracking
