@@ -13,6 +13,12 @@ Hopefully the agent can be more precise, timely, and optimized than human agents
 
 The current version only has basic mechanics and is still under development with some known issues. Refer to Issue page for details.
 
+### What are the key thesis to be done in near term?
+- Can deep learning technique help to improve the cognitive capbility of the Reinforcement Learning agent?
+- Can time series forecasting technique help to predict future rewards better and improve decisioning capability?
+
+---
+
 ### Key Features
 
 1) **main.py**
