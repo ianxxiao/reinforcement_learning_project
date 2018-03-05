@@ -12,7 +12,7 @@ We aim to develop an computer agent that is able to decide how many bikes to mov
 We measure if the computer agent can achieve the following without deliberate programming:  
 1) learn the limit of 50 bikes by end of day and 
 2) maintain the allowable bike stock with minimum cost, which ties to the number of bikes moved in a day
-3) re-learn new rebalancing strategy if external objectives changes (e.g. bike stock limit, flucturating daily traffic flow, allowed actions)
+3) develop new rebalancing strategy if external objectives changes (e.g. bike stock limit, flucturating daily traffic flow, allowed actions)
 
 ### What will be the benefit and impact of our work?
 Hopefully the agent can be more precise, timely, and optimized than human agents. If we are successful, this is one step closer to creating a true smart city powered by Artificial Intelligence. 
