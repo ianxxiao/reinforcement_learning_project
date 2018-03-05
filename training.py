@@ -5,7 +5,12 @@ Created on Sun Mar  4 15:35:23 2018
 
 @author: Ian
 
-This creates a class for training session.
+This creates a class for training session with the following methods:
+    - start()
+    - train_operator()
+    - get_timestamp()
+    - cal_performance()
+    - save_session_results()
 
 """
 
@@ -14,6 +19,7 @@ import matplotlib.pyplot as plt
 from env import env
 from rl_brain import agent
 import datetime
+import os
 
 class trainer():
     
@@ -32,6 +38,10 @@ class trainer():
         self.success_ratio = 0
         self.rewards = []  # [[r from session 1], [r from session 2] ...]
         self.final_stocks = [] # [[stock from session 1], [stock from session 2] ...]
+        self.episode_action_history = []
+        self.session_action_history = []
+        self.q_tables = []
+        
     
     def start(self, episodes, stock_type, logging, env_debug, rl_debug):
         
@@ -46,7 +56,7 @@ class trainer():
             # Initiate new evironment and RL agent
             self.bike_station = env(self.stock_type, debug = self.env_debug)
             self.operator = agent(epsilon = 0.9, lr = 0.01, gamma = 0.9, 
-                                  current_stock = self.bike_stateion.current_stock(), 
+                                  current_stock = self.bike_station.current_stock(), 
                                   debug = self.rl_debug)
             
             # Train the RL agent and collect performance stats
@@ -55,6 +65,9 @@ class trainer():
             # Log the results from this training session
             self.rewards.append(rewards)
             self.final_stocks.append(final_stocks)
+            self.q_tables.append(self.operator.get_q_table())
+            self.session_action_history.append(self.episode_action_history)
+            self.reset_episode_action_history()
             
             # Destroy the environment and agent objects
             self.bike_station = None
@@ -62,7 +75,7 @@ class trainer():
         
         if logging == True:
             
-            self.save_session_results(self.get_timestampe())
+            self.save_session_results(self.get_timestamp(replace = True))
             
         return
     
@@ -97,35 +110,48 @@ class trainer():
                 
                 rewards += reward
                 
+                # Log hourly action history by each episode
+                
                 if done == True:
                     
-                    print("Episode: {} | Final Stock: {} |Final Reward: {}".format(eps, 
+                    print("Episode: {} | Final Stock: {} |Final Reward: {:.2f}".format(eps, 
                           old_stock, rewards))
                     
                     reward_list.append(rewards)
                     final_stocks.append(old_stock)
                     rewards = 0
+                    
+                    # Log session action history by episode
+                    self.episode_action_history.append(self.operator.get_hourly_actions())
+                    self.operator.reset_hourly_action()
                                     
                     break
-        
-        if logging == True:
-                    
-            self.operator.export_q_table(episodes, self.get_timestampe())
                             
         return reward_list, final_stocks
     
-    def get_timestampe(self):
+    def get_timestamp(self, replace):
         
+        if replace == True:
         
-        return str(datetime.datetime.now()).replace(" ", "").replace(":", "").\
-                    replace(".", "").replace("-", "")
+            return str(datetime.datetime.now()).replace(" ", "").replace(":", "").\
+                        replace(".", "").replace("-", "")
+        
+        else:
+            
+            return str(datetime.datetime.now())
     
+    
+    def reset_episode_action_history(self):
+        
+        self.episode_action_history = []
+        
     
     def cal_performance(self):
         
         successful_stocking = []
         
         print("===== Performance =====")
+        
         for session in range(len(self.final_stocks)):
             
             num_overstock = np.count_nonzero(np.array(self.final_stocks[session]) > 50)
@@ -139,11 +165,42 @@ class trainer():
         
         return successful_stocking
     
+    
     def save_session_results(self, timestamp):
         
-        # Plot Overall Success Rate by Episode
+        '''
+        This function logs the following: 
+            - overall success ratio of each session
+            - line chart of success ratio by session
+            - line chart of reward history by session
+            - Q Table of each session
+            - Comparison Line Chart of First and Last Episode Hourly Actions
+        '''
         
+        # --- create a session folder ---
+        dir_path = "./performance_log/" + timestamp
+        
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+            
         successful_stocking = self.cal_performance()
+        
+        # --- Write Success Rate to File ---
+        fname = dir_path + "/success_rate - " + timestamp + ".txt"
+        
+        with open(fname, 'w') as f:
+            
+            f.write("Logged at {}".format(self.get_timestamp(replace = False)))
+            f.write("\n")
+            f.write("This training session ran episodes: {}".format(self.episodes))
+            f.write("\n")
+        
+            for session in range(len(successful_stocking)):
+                f.write("Session {} | Episodes: {} | Success Rate: {:.2f}%".format(session, 
+                        self.episodes[session], successful_stocking[session]))
+                f.write("\n")
+        
+        # --- Plot Overall Success Rate by Episode ---
         
         title = "% of Successful Rebalancing - " + timestamp
         
@@ -152,9 +209,9 @@ class trainer():
         plt.xlabel("Episodes")
         plt.ylabel("% Success Rate")
         plt.title(title)
-        fig1.savefig("./training_results/"+"session_success_rate_" + timestamp)
+        fig1.savefig(dir_path + "/session_success_rate_" + timestamp)
         
-        # Plot Reward History by Training Session
+        # --- Plot Reward History by Training Session ---
         
         for session in range(len(self.rewards)):
             
@@ -168,8 +225,44 @@ class trainer():
             plt.xlabel("Episode")
             plt.ylabel("Reward")
             plt.title(title)
-            fig.savefig("./reward_history/" + "reward_history_" + timestamp)
+            fig.savefig(dir_path + "/reward_history_session_" + \
+                        str(session) + timestamp)
+            
+        # --- Save Q tables --- 
         
+        for session in range(len(self.q_tables)):
+            
+            self.q_tables[session].to_csv(dir_path + "/q_table_session_" + \
+                        str(session) + timestamp + ".csv")
+        
+        # --- Comparison Line Chart of First and Last Episode for each Session ---
+        
+        file_path = dir_path + "/action_history"
+        
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)       
+        
+        
+        for session in range(len(self.session_action_history)):
+            
+            first_eps_idx = 0
+            last_eps_idx = len(self.session_action_history[session])-1
+            
+            fig = plt.figure()
+            title = "Session " + str(session) + " - Hourly Action of Eps " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
+            
+            x_axis = [x for x in range(len(self.session_action_history[session][0]))]
+            plt.plot(x_axis, self.session_action_history[session][0], label = "Eps 0")
+            plt.plot(x_axis, self.session_action_history[session][-1], 
+                     label = "Eps " + str(last_eps_idx))
+            
+            plt.legend()
+            plt.xlabel("Hours")
+            plt.ylabel("Number of Bikes Moved")
+            plt.title(title)
+            
+            fig.savefig(file_path + "/action_history_" + str(session) + timestamp)
+            
         return
     
     

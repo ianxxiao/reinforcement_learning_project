@@ -13,7 +13,7 @@ from training import trainer
 
 if __name__ == "__main__":
     
-    episode_list = [eps for eps in range(10000, 100000, 2000)]
+    episode_list = [eps for eps in range(100, 200, 50)]
     
     trainer = trainer()
     trainer.start(episode_list, "linear", logging  = 

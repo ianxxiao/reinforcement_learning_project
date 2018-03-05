@@ -1,0 +1,4 @@
+Logged at 2018-03-05 15:01:32.250580
+This training session ran episodes: [100, 150]
+Session 0 | Episodes: 100 | Success Rate: 90.00%
+Session 1 | Episodes: 150 | Success Rate: 88.67%

@@ -28,11 +28,15 @@ class agent():
         self.epsilon = epsilon
         self.lr = lr
         self.gamma = gamma
-        self.q_table = pd.DataFrame(columns = self.actions, dtype = np.float64)
         self.debug = debug
         self.current_stock = current_stock
         
+        # performance metric
+        self.q_table = pd.DataFrame(columns = self.actions, dtype = np.float64)
+        self.hourly_action_history = []
+       
     def choose_action(self, s):
+        
         '''
         This funciton choose an action based on Q Table. It also does 
         validation to ensure stock will not be negative after moving bikes.
@@ -42,6 +46,7 @@ class agent():
             - action: number of bikes to move
         
         '''
+        
         self.check_state_exist(s)
         
         # find valid action based on current stock 
@@ -73,7 +78,10 @@ class agent():
             if self.debug == True:
                 print("Randomly Move: {}".format(action))
         
+        self.hourly_action_history.append(action)
+        
         return action
+ 
     
     def learn(self, s, a, r, s_):
         
@@ -110,6 +118,7 @@ class agent():
         self.q_table.loc[s, a] += self.lr * (q_target - q_predict)
         
         return
+
     
     def check_state_exist(self, state):
         
@@ -126,6 +135,7 @@ class agent():
                 )
         
         return
+
 
     def find_valid_action(self, state_action):
         
@@ -154,7 +164,18 @@ class agent():
     def print_q_table(self):
         
         print(self.q_table)
-    
-    def export_q_table(self, eps, time):
+
+
+    def get_q_table(self):
         
-        self.q_table.to_csv("./q_table/q_table_"+str(eps)+"_"+str(time)+".csv")
+        return self.q_table
+
+    
+    def get_hourly_actions(self):
+        
+        return self.hourly_action_history
+
+    
+    def reset_hourly_action(self):
+        
+        self.hourly_action_history = []
