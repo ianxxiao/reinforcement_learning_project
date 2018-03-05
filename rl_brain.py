@@ -48,6 +48,7 @@ class agent():
         '''
         
         self.check_state_exist(s)
+        self.current_stock = s
         
         # find valid action based on current stock 
         # cannot pick an action that lead to negative stock

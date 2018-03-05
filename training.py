@@ -11,6 +11,7 @@ This creates a class for training session with the following methods:
     - get_timestamp()
     - cal_performance()
     - save_session_results()
+    - reset_episode_action_history()
 
 """
 
