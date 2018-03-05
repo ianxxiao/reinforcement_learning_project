@@ -32,15 +32,15 @@ The agent was able to limit bikes under 50 more oftern after interacting with th
 
 ![image](/result_snapshot/session_success_rate_2018-03-05101044410867.png)
 
-The agent was being more strategic when moving bikes out of stations after 2000 interactions.
+The agent was being more strategic when moving bikes out of stations after 1500 training interactions.
 
 **Figure 2**: Bike moving comparison between training episode 0 and 2000
 
 ![image](/result_snapshot/action_history_220180305223236794486.png)
 
-The agent choose its action based on an intuitive Q Table it developed **independently** without active human programming.
+The agent chose its action based on an intuitive Q Table it developed **independently** without explicit human programming.
 
-**Figure 3**: Heatmap of expected reward of an action when given certain bike stocks
+**Figure 3**: Heatmap of expected reward of an action when given certain bike stocks after 98000 interactions.
 
 ![image](/result_snapshot/q_table_explaination.png)
 
