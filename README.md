@@ -11,7 +11,7 @@ We aim to develop an computer agent that is able to decide how many bikes to mov
 ### How do we measure success (KPIs)?
 We measure if the computer agent can achieve the following without deliberate human programming, but only with reward and penalty based on bike stocks:  
 1) **High Success Ratio**: % of times it learns to limit bike stock equal or less than 50 by each day 23:00
-2) **Low Cost**: Total cost the agent used to balance bike stocks; the agent will receive -0.1 * number of bikes moved penalty
+2) **Low Cost**: Total cost the agent used to balance bike stocks; the agent will receive a penalty of -0.1 * (number of bikes moved)
 3) **Short Learning Time**: the agent should be able to develop new rebalancing strategy quickly when external objectives change (e.g. bike stock limit, flucturating daily traffic flow, allowed actions)
 
 ### What will be the benefit and impact of our work?
