@@ -11,7 +11,7 @@ This README includes the following:
 We are developing an AI agent to re-balance bike stocks using Reinforcement Learning and CitiBike data without explicit human instructions.
 
 ### How is bike re-balancing being done now?
-Bikes accumulate or deplete at certain popular locations. Companies, such as CitiBike, spend lots of effort and money to manage bike stock at each station to ensure availability to riders throughout the day. Re-balancing is currently monitored and orchestrated by human based on conversation with citiBike frontline operators.
+Bikes accumulate or deplete quickly at certain popular locations. Companies, such as CitiBike, spend lots of effort and money to manage bike stock at each station to ensure availability to riders throughout the day. Re-balancing is currently monitored and orchestrated by human based on conversation with citiBike frontline operators.
 
 ### How do we envision bike balancing to be done?
 We aim to develop a computer agent that is able to understand what the bike stock limit is and decide how many bikes to move to where without hard coding any rules. The only thing we specify is the reward, which the agent will receive if it manages to keep the number of bikes to be less than 50 at the end of each day (23:00). The agent will also receive penalty based on the number of bikes it moves and if the number of bikes exceed 50.
