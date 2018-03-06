@@ -10,7 +10,7 @@ We aim to develop an computer agent that is able to decide how many bikes to mov
 
 ### How do we measure success?
 We measure if the computer agent can achieve the following without deliberate human programming, but only with reward and penalty based on bike stocks:  
-1) learn the limit of 50 bikes by end of day 
+1) learn to limit bike stock equal or less than 50 by each day 23:00
 2) maintain the allowable bike stock with minimum cost; the agent will receive -0.1 * number of bikes moved penalty
 3) develop new rebalancing strategy when external objectives change (e.g. bike stock limit, flucturating daily traffic flow, allowed actions)
 
