@@ -42,9 +42,9 @@ The current version only has basic mechanics and is still under development with
 
 ![image](/result_snapshot/session_success_rate_2018-03-05101044410867.png)
 
-**The agent was being more strategic when moving bikes out of stations after 1500 episodes.**
+**The agent was being more strategic when moving bikes out of stations after learning from 1500 episodes.**
 
-**Figure 2**: Bike moving comparison between training episode 0 and 2000
+**Figure 2**: Bike moving comparison between the first and last training episode
 
 ![image](/result_snapshot/action_history_220180305223236794486.png)
 
