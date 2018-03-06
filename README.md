@@ -44,19 +44,19 @@ We measure if the computer agent can achieve the following without deliberate hu
     - -10 if bike stock is more than 50 at hour 23:00
     - -0.1 * number of bike removed at each hour
 
-**The agent was able to limit bikes under 50 more oftern after interacting with the environment more.**
+**Insights 1: The agent was able to limit bikes under 50 more oftern after interacting with the environment more.**
 
 **Figure 1**: Comparison of success ratio as the number of episode increases. The success ratio is defined as % of times when the agent limited bikes to be equal or less than 50.
 
 ![image](/result_snapshot/session_success_rate_2018-03-05101044410867.png)
 
-**The agent was being more strategic when moving bikes out of stations after learning from 1500 episodes.**
+**Insight 2: The agent was being more strategic when moving bikes out of stations after learning from 1500 episodes.**
 
 **Figure 2**: Bike moving comparison between the first and last training episode
 
 ![image](/result_snapshot/action_history_220180305223236794486.png)
 
-**The agent chose actions based on a Q-Table it developed without explicit human programming. The Q-Table shows intuitive patterns.**
+**Insight 3: The agent chose actions based on a Q-Table it developed without explicit human programming. The Q-Table shows intuitive patterns.**
 
 **Figure 3**: Heatmap of expected reward of an action when the agent was given certain bike stocks after 98000 training episodes.
 
