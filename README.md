@@ -72,7 +72,7 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 ---
 
-### What are the immediate next steps in development?
+### What is in the development pipeline?
 - Generalize agent training to more complicated traffic flow for a single station (only linear inflow traffic at the moment)
 - Generalize agent training to handle adding and removing bikes in a connected bike station network and traffic flow
 - Experiment with different reward structure and learning parameters to benchmark performances
