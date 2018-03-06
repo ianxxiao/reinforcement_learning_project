@@ -51,7 +51,7 @@ We measure if the computer agent can achieve the following without deliberate hu
     - +10 if bike stock is equal or less than 50 at hour 23:00
     - -10 if bike stock is more than 50 at hour 23:00
     - -0.1 * number of bike removed at each hour
-    - -20 if bike stock becomes negative at any given point (being implemented at the moment)
+    - -20 if bike stock becomes negative at any given point (being implemented and tested at the moment)
 
 **Insights 1: The agent was able to limit bikes under 50 more often after interacting with the environment more.**
 
