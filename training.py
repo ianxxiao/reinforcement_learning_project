@@ -104,7 +104,13 @@ class trainer():
                 
             while True:
                 
-                # Pick an Action, Collect Reward and New State, Decide a New Action, Repeat
+                # Agent picks an action (number of bikes to move)
+                # Agent sends the action to bike station environment
+                # Agent gets feedback from the environment (e.g. reward of the action, new bike stock after the action, etc.)
+                # Agent "learn" the feedback by updating its Q-Table (state, action, reward)
+                # Repeat until end of day (23 hours)
+                # Reset bike station environment to start a new day, repeat all
+                
                 action = self.operator.choose_action(self.bike_station.get_old_stock())
                 current_hour, old_stock, new_stock, reward, done = self.bike_station.ping(action)
                 self.operator.learn(old_stock, action, reward, new_stock)
