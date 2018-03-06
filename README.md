@@ -28,13 +28,21 @@ The current version only has basic mechanics and is still under development with
 
 **Setup**: The following results were generated using a simulation with linearly increasing bike stock. The initial stock at 00:00 is 20 and 3 additional bikes were added hourly. There would be 89 bikes at 23:00 if no bikes were removed during the day.
 
+**Terminology**
+- Agent: Reinforcement Learning object acting as a "bike re-balancing operator"
+- Environment: a bike station object that will provide feedback such as the number of bikes and reward / penalty
+- Training: interactions between the agent and environment for the agent to learn what the goal is and how to achieve it the best
+- Episode: number of independent training session (the environment is reset, but agent keeps the learning from episode to another); each episode has 24 hour inter-dependent instances with bike stock info based on the environment setup and agent actions
+- Session: each session has multiple episodes with both environment and agent reset; the goal is to benchmark agent performances based on the number of episodes (e.g. will more training episode leads to high success ratio?)
+- Q-Table: a matrix the agent use to decide future action based on state-action-reward tuples; the agent develop this Q-Table from each training episode based on environment feedback
+
 **The agent was able to limit bikes under 50 more oftern after interacting with the environment more.**
 
-**Figure 1**: Comparison of success ratio as the number of interaction increases. The success ratio is defined as % of times when the agent limited bikes to be equal or less than 50.
+**Figure 1**: Comparison of success ratio as the number of episode increases. The success ratio is defined as % of times when the agent limited bikes to be equal or less than 50.
 
 ![image](/result_snapshot/session_success_rate_2018-03-05101044410867.png)
 
-**The agent was being more strategic when moving bikes out of stations after 1500 training interactions.**
+**The agent was being more strategic when moving bikes out of stations after 1500 episodes.**
 
 **Figure 2**: Bike moving comparison between training episode 0 and 2000
 
@@ -42,7 +50,7 @@ The current version only has basic mechanics and is still under development with
 
 **The agent chose actions based on a Q-Table it developed without explicit human programming. The Q-Table shows intuitive patterns.**
 
-**Figure 3**: Heatmap of expected reward of an action when given certain bike stocks after 98000 interactions.
+**Figure 3**: Heatmap of expected reward of an action when the agent was given certain bike stocks after 98000 training episodes.
 
 ![image](/result_snapshot/q_table_explaination.png)
 
