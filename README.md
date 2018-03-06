@@ -26,23 +26,23 @@ We measure if the computer agent can achieve the following without deliberate hu
 ### Preliminary Results and Baseline
 
 **Terminology**
-- Agent: Reinforcement Learning object acting as a "bike re-balancing operator"
-- Environment: a bike station object that will provide feedback such as the number of bikes and reward / penalty
-- Training: interactions between the agent and environment for the agent to learn what the goal is and how to achieve it the best
-- Episode: number of independent training session (the environment is reset, but agent keeps the learning from episode to another); each episode has 24 hour inter-dependent instances with bike stock info based on the environment setup and agent actions
-- Session: each session has multiple episodes with both environment and agent reset; the goal is to benchmark agent performances based on the number of episodes (e.g. will more training episode leads to high success ratio?)
-- Q-Table: a matrix the agent use to decide future action based on state-action-reward tuples; the agent develop this Q-Table from each training episode based on environment feedback
+- **Agent**: Reinforcement Learning object acting as a "bike re-balancing operator"
+- **Environment**: a bike station object that will provide feedback such as the number of bikes and reward / penalty
+- **Training**: interactions between the agent and environment for the agent to learn what the goal is and how to achieve it the best
+- **Episode**: number of independent training session (the environment is reset, but agent keeps the learning from episode to another); each episode has 24 hour inter-dependent instances with bike stock info based on the environment setup and agent actions
+- **Session**: each session has multiple episodes with both environment and agent reset; the goal is to benchmark agent performances based on the number of episodes (e.g. will more training episode leads to high success ratio?)
+- **Q-Table**: a matrix the agent use to decide future action based on state-action-reward tuples; the agent develop this Q-Table from each training episode based on environment feedback
 
 **Setup**
 
-**Environment**: The following results were generated using a simulation with linearly increasing bike stock. The initial stock at 00:00 is 20 and 3 additional bikes were added hourly. There would be 89 bikes at 23:00 if no bikes were removed during the day.
+- **Environment**: The following results were generated using a simulation with linearly increasing bike stock. The initial stock at 00:00 is 20 and 3 additional bikes were added hourly. There would be 89 bikes at 23:00 if no bikes were removed during the day.
 
-**Agent**: The agent can only remove bikes from a station in the quantity of 0, -1, -3, and -10. 
+- **Agent**: The agent can only remove bikes from a station in the quantity of 0, -1, -3, and -10. 
 
-**Reward / Penalty**: 
-- +10 if bike stock is equal or less than 50 at hour 23:00
-- -10 if bike stock is more than 50 at hour 23:00
-- -0.1 * number of bike removed at each hour
+- **Reward / Penalty**: 
+    - +10 if bike stock is equal or less than 50 at hour 23:00
+    - -10 if bike stock is more than 50 at hour 23:00
+    - -0.1 * number of bike removed at each hour
 
 **The agent was able to limit bikes under 50 more oftern after interacting with the environment more.**
 
