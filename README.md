@@ -68,7 +68,7 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 **Figure 3**: Heatmap of expected reward of an action when the agent was given certain bike stocks after 98000 training episodes.
 
-![image](/result_snapshot/q_table_explaination.png)
+![image](/result_snapshot/q_table_explaination_20180306.png)
 
 ---
 
