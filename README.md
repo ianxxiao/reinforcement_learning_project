@@ -6,13 +6,13 @@ We try to develop an intelligent agent to re-balance shared bikes using Reinforc
 Bike accumulates or depletes at certain popular locations. Companies, such as CitiBike, spend lots of effort and money to manage bike stock at each station to ensure availability to riders throughout the day. This operaiton is currently orchestrated by human operators. 
 
 ### How do we envision bike balancing to be done?
-We aim to develop an computer agent that is able to decide how many bikes to move and to where without hard coding any rules. The only thing we specify is the reward, which the agent will receive if it manages to keep the number of bikes to be less than 50 at the end of each day. 
+We aim to develop an computer agent that is able to decide how many bikes to move and to where without hard coding any rules. The only thing we specify is the reward, which the agent will receive if it manages to keep the number of bikes to be less than 50 at the end of each day (23:00). 
 
 ### How do we measure success?
-We measure if the computer agent can achieve the following without deliberate programming:  
-1) learn the limit of 50 bikes by end of day and 
-2) maintain the allowable bike stock with minimum cost, which ties to the number of bikes moved in a day
-3) develop new rebalancing strategy if external objectives changes (e.g. bike stock limit, flucturating daily traffic flow, allowed actions)
+We measure if the computer agent can achieve the following without deliberate human programming, but only with reward and penalty based on bike stocks:  
+1) learn the limit of 50 bikes by end of day 
+2) maintain the allowable bike stock with minimum cost; the agent will receive -0.1 * number of bikes moved penalty
+3) develop new rebalancing strategy when external objectives change (e.g. bike stock limit, flucturating daily traffic flow, allowed actions)
 
 ### What will be the benefit and impact of our work?
 Hopefully the agent can be more precise, timely, and optimized than human agents. If we are successful, this is one step closer to creating a true smart city powered by Artificial Intelligence. 
