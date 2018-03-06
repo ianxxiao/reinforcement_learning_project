@@ -1,3 +1,11 @@
+This README includes the following:
+- Project Overview
+- Preliminary Results with On-Going Updates
+- Features under Development
+- Technical Asset Overview
+
+---
+
 ### What are we building?
 
 We are developing an AI agent to re-balance bike stocks using Reinforcement Learning and CitiBike data without explicit human instructions.
@@ -72,7 +80,7 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 ---
 
-### Key Features
+### Overview of Technical Assets
 
 1) **main.py**
 This is the main workflow of initializing and training a RL agent and collecting analytics insights for debugging or reporting.
