@@ -44,7 +44,7 @@ We measure if the computer agent can achieve the following without deliberate hu
     - -10 if bike stock is more than 50 at hour 23:00
     - -0.1 * number of bike removed at each hour
 
-**Insights 1: The agent was able to limit bikes under 50 more oftern after interacting with the environment more.**
+**Insights 1: The agent was able to limit bikes under 50 more often after interacting with the environment more.**
 
 **Figure 1**: Comparison of success ratio as the number of episode increases. The success ratio is defined as % of times when the agent limited bikes to be equal or less than 50.
 
