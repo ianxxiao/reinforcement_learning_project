@@ -15,7 +15,7 @@ Hopefully the agent can be more precise, timely, and optimized than human agents
 We measure if the computer agent can achieve the following without deliberate human programming, but only with reward and penalty based on bike stocks:  
 1) **High Success Ratio**: % of times it learns to limit bike stock equal or less than 50 by each day 23:00
 2) **Low Cost**: Total cost the agent used to balance bike stocks; the agent will receive a penalty of -0.1 * (number of bikes moved)
-3) **Short Learning Time**: the agent should be able to develop new rebalancing strategy quickly when external objectives change (e.g. bike stock limit, flucturating daily traffic flow, allowed actions)
+3) **Short Learning Time**: the agent should be able to develop new rebalancing strategy quickly when external objectives change (e.g. bike stock limit, fluctuating  daily traffic flow, allowed actions)
 
 ### What are the key thesis to investigate in near term?
 - Can Deep Learning (e.g. RNN) and time series forecasting techniques improve the performance KPIs (e.g. increase success ratio, lower cost, and shorten learning time)?
