@@ -3,6 +3,7 @@ This README includes the following:
 - Preliminary Results with On-Going Updates
 - Features under Development
 - Technical Asset Overview
+- Literature Reference
 
 ---
 
@@ -122,3 +123,7 @@ This script is for creating a trainer class. It has the following methods:
     4) cal_performance(): this calculates detailed performance metrics after each training session
     5) save_session_results(): this saves all performance report assets
     6) reset_episode_action_history: this is a helper function for performance tracking
+---
+# Literature Reference
+- Reinforcement Learning and Simulation-Based Search - http://www0.cs.ucl.ac.uk/staff/d.silver/web/Publications_files/thesis.pdf
+- Coding Reinforcement Learning - https://morvanzhou.github.io
