@@ -67,7 +67,7 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 **Insight 3: The agent chose actions based on a Q-Table it developed without explicit human programming. The Q-Table shows intuitive patterns (see explanation below).**
 
-**Figure 3**: A heatmap of expected reward the agent developed after 98,000 trianing episodes. Blue indicates relative high reward, red means lower reward. The agent would choose the action that leads to the highest reward at a given state (rows, a number of bikes a station holds).
+**Figure 3**: A heatmap of expected reward the agent developed after 98,000 trianing episodes. Blue indicates relative high reward, red means lower reward. The agent would choose the action that could lead to the highest expected reward at a given state. States are in rows and it means the number of bikes a station holds in current hour. Actions are columns, the agent could only choose one of four pre-defined action in this case. Expected rewards are stored in the values.
 
 ![image](/result_snapshot/q_table_explaination_20180306.png)
 
