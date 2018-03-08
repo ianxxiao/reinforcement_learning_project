@@ -49,8 +49,8 @@ We measure if the computer agent can achieve the following without deliberate hu
 - **Agent**: The agent can only remove bikes from a station in the quantity of 0, -1, -3, and -10. 
 
 - **Reward / Penalty**: 
-    - +10 if bike stock is equal or less than 50 at hour 23:00
-    - -10 if bike stock is more than 50 at hour 23:00
+    - +10 if the bike stock is equal or less than 50 at hour 23:00
+    - -10 if the bike stock is more than 50 at hour 23:00
     - -0.1 * number of bike removed at each hour
     - -20 if bike stock becomes negative at any given point (being implemented and tested at the moment)
 
