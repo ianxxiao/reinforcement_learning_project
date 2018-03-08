@@ -9,7 +9,7 @@ This README includes the following:
 
 ### What are we building?
 
-We are developing an AI agent to re-balance bike stocks using Reinforcement Learning and CitiBike data without explicit human instructions. Reinforcement Learning is the technique behind AlphaGo and self-driving cars.
+We are developing an AI agent to re-balance bike stocks using Reinforcement Learning and CitiBike data without human knowledge and explicit programming. Reinforcement Learning is the technique behind AlphaGo and self-driving cars.
 
 ### How is bike re-balancing being done now?
 Bikes accumulate or deplete quickly at certain popular locations. Companies, such as CitiBike, spend lots of effort and money to manage bike stock at each station to ensure availability to riders throughout the day. Re-balancing is currently monitored and orchestrated by human based on conversation with citiBike frontline operators.
