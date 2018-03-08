@@ -59,7 +59,7 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 **Figure 1**: Line chart comparison of original houly simulated stock without balancing, and balanced stocks after 1 or 150 training episodes.
 
-**Insight 2: The agent was able to manage bike stock better after interacting with the environment more.**
+**Insight 2: The agent was able to manage bike stock better after more interactions with the environment.**
 
 ![image](/result_snapshot/session_success_rate_2018-03-05101044410867.png)
 
