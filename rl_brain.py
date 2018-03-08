@@ -34,6 +34,7 @@ class agent():
         # performance metric
         self.q_table = pd.DataFrame(columns = self.actions, dtype = np.float64)
         self.hourly_action_history = []
+        self.hourly_stock_history = []
        
     def choose_action(self, s):
         
@@ -80,6 +81,7 @@ class agent():
                 print("Randomly Move: {}".format(action))
         
         self.hourly_action_history.append(action)
+        self.hourly_stock_history.append(s)
         
         return action
  
@@ -175,8 +177,13 @@ class agent():
     def get_hourly_actions(self):
         
         return self.hourly_action_history
+    
+    def get_hourly_stocks(self):
+        
+        return self.hourly_stock_history
 
     
-    def reset_hourly_action(self):
+    def reset_hourly_history(self):
         
         self.hourly_action_history = []
+        self.hourly_stock_history = []

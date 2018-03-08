@@ -126,3 +126,7 @@ class env():
     def current_stock(self):
         
         return self.bike_stock[self.current_hour]
+    
+    def get_sim_stock(self):
+        
+        return self.bike_stock

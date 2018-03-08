@@ -34,13 +34,16 @@ class trainer():
         self.rl_debug = False
         self.bike_station = None
         self.operator = None
+        self.sim_stock = []
         
         # Performance Metric
         self.success_ratio = 0
         self.rewards = []  # [[r from session 1], [r from session 2] ...]
         self.final_stocks = [] # [[stock from session 1], [stock from session 2] ...]
         self.episode_action_history = []
+        self.episode_stock_history = []
         self.session_action_history = []
+        self.session_stock_history = []
         self.q_tables = []
         
     
@@ -56,6 +59,7 @@ class trainer():
         
             # Initiate new evironment and RL agent
             self.bike_station = env(self.stock_type, debug = self.env_debug)
+            self.sim_stock.append(self.bike_station.get_sim_stock())
             self.operator = agent(epsilon = 0.9, lr = 0.01, gamma = 0.9, 
                                   current_stock = self.bike_station.current_stock(), 
                                   debug = self.rl_debug)
@@ -68,7 +72,8 @@ class trainer():
             self.final_stocks.append(final_stocks)
             self.q_tables.append(self.operator.get_q_table())
             self.session_action_history.append(self.episode_action_history)
-            self.reset_episode_action_history()
+            self.session_stock_history.append(self.episode_stock_history)
+            self.reset_episode_history()
             
             # Destroy the environment and agent objects
             self.bike_station = None
@@ -130,7 +135,8 @@ class trainer():
                     
                     # Log session action history by episode
                     self.episode_action_history.append(self.operator.get_hourly_actions())
-                    self.operator.reset_hourly_action()
+                    self.episode_stock_history.append(self.operator.get_hourly_stocks())
+                    self.operator.reset_hourly_history()
                                     
                     break
                             
@@ -148,9 +154,10 @@ class trainer():
             return str(datetime.datetime.now())
     
     
-    def reset_episode_action_history(self):
+    def reset_episode_history(self):
         
         self.episode_action_history = []
+        self.episode_stock_history = []
         
     
     def cal_performance(self):
@@ -269,7 +276,38 @@ class trainer():
             plt.title(title)
             
             fig.savefig(file_path + "/action_history_" + str(session) + timestamp)
+        
+        
+        # --- Comparison Line Chart of Simulated and Rebalaned Bike Stock --- #
+        file_path = dir_path + "/stock_history"
+        
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)       
+        
+        
+        for session in range(len(self.session_stock_history)):
             
+            first_eps_idx = 0
+            last_eps_idx = len(self.session_action_history[session])-1
+            
+            fig = plt.figure()
+            title = "Session " + str(session) + " - Original vs. Balanced Bike Stock after" + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
+            
+            x_axis = [x for x in range(len(self.session_stock_history[session][0]))]
+            plt.plot(x_axis, self.sim_stock[session], label = "Original without Balancing")
+            plt.plot(x_axis, self.session_stock_history[session][0], label = "Balanced Bike Stock - Eps 0")
+            plt.plot(x_axis, self.session_stock_history[session][-1], 
+                     label = "Balanced Bike Stock - Eps " + str(last_eps_idx))
+            
+            plt.axhline(y = 50, c = "r", ls = "--", label = "Stock Limit")
+            
+            plt.legend()
+            plt.xlabel("Hours")
+            plt.ylabel("Number of Bike Stock")
+            plt.title(title)
+            
+            fig.savefig(file_path + "/stock_history_" + str(session) + timestamp)
+        
         return
     
     
