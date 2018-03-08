@@ -53,7 +53,13 @@ We measure if the computer agent can achieve the following without deliberate hu
     - -0.1 * number of bike removed at each hour
     - -20 if bike stock becomes negative at any given point (being implemented and tested at the moment)
 
-**Insights 1: The agent was able to limit bikes under 50 more often after interacting with the environment more.**
+**Insight 1: The agent was able to recognize the 50 bike stock limit and manage stock effectively and cheaply after some training.**
+
+**Figure 1**: Line chart comparison of original houly simulated stock without balancing, and balanced stocks after 1 or 150 training episodes.
+
+![image](/result_snapshot/stock_history_120180308093154459029.png)
+
+**Insight 2: The agent was able to limit bikes under 50 more often after interacting with the environment more.**
 
 **Figure 1**: Comparison of success ratio as the number of training episode increases. The success ratio is defined as % of times when the agent limited bikes to be equal or less than 50.
 
