@@ -57,7 +57,9 @@ We measure if the computer agent can achieve the following without deliberate hu
     - -0.1 * number of bike removed at each hour
     - -20 if bike stock becomes negative at any given point (being implemented and tested at the moment)
 
-**Insight 1: The agent was able to recognize the 50 bike stock limit and manage stock effectively and cheaply after some training.**
+**Insight 1: The agent was able to recognize the 50 bike stock limit and manage stock effectively and cheaply after some training.** 
+
+The agent recognized the bike stock limit by reward feedback through all training episodes, instead of having "visiblity" to what the human programmer specified.
 
 ![image](/result_snapshot/stock_history_120180308093154459029.png)
 
