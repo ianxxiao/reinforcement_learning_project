@@ -55,29 +55,29 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 **Insight 1: The agent was able to recognize the 50 bike stock limit and manage stock effectively and cheaply after some training.**
 
-**Figure 1**: Line chart comparison of original houly simulated stock without balancing, and balanced stocks after 1 or 150 training episodes.
-
 ![image](/result_snapshot/stock_history_120180308093154459029.png)
+
+**Figure 1**: Line chart comparison of original houly simulated stock without balancing, and balanced stocks after 1 or 150 training episodes.
 
 **Insight 2: The agent was able to manage bike stock better after interacting with the environment more.**
 
-**Figure 2**: Comparison of success ratio as the number of training episode increases. The success ratio is defined as % of times when the agent limited bikes to be equal or less than 50.
-
 ![image](/result_snapshot/session_success_rate_2018-03-05101044410867.png)
+
+**Figure 2**: Comparison of success ratio as the number of training episode increases. The success ratio is defined as % of times when the agent limited bikes to be equal or less than 50.
 
 **Insight 3: The agent became more "thoughtful" when moving bikes out of stations after learning from 1500 training episodes.**
 
-**Figure 3**: Comparison of number of bikes moved in each hour between the first and last training episode
-
 ![image](/result_snapshot/action_history_220180305223236794486.png)
 
-**Insight 4: The agent chose actions based on a Q-Table it developed without explicit human programming. The Q-Table shows intuitive patterns (see explanation below).**
+**Figure 3**: Comparison of number of bikes moved in each hour between the first and last training episode
 
-**Figure 4**: A heatmap of expected future reward the agent developed after 98,000 trianing episodes. 
+**Insight 4: The agent chose actions based on a Q-Table it developed without explicit human programming. The Q-Table shows intuitive patterns (see explanation below).**
 
 Blue indicates relative high reward, red means lower reward. The agent would choose the action that could lead to the highest expected reward at a given state. States are in rows and it means the number of bikes a station holds in current hour. Actions are columns, the agent could only choose one of four pre-defined actions (e.g. moving -10, -3, -1, or 0 bikes) in this case. Expected future rewards are stored in the values.
 
 ![image](/result_snapshot/q_table_explaination_20180306.png)
+
+**Figure 4**: A heatmap of expected future reward the agent developed after 98,000 trianing episodes. 
 
 ---
 
