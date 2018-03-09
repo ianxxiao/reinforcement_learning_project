@@ -49,7 +49,7 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 - **Environment**: The following results were generated using a simulation with linearly increasing bike stock. The initial stock at 00:00 is 20 and 3 additional bikes were added hourly. There would be 89 bikes at 23:00 if no bikes were removed during the day.
 
-- **Agent**: The agent can only remove bikes from a station in the quantity of 0, -1, -3, and -10. 
+- **Agent**: The agent can only remove bikes from a station in a quantity of 0, -1, -3, or -10 in each hour. 
 
 - **Reward / Penalty**: 
     - +10 if the bike stock is equal or less than 50 at hour 23:00
