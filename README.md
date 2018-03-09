@@ -21,7 +21,7 @@ Bikes accumulate or deplete quickly at certain popular locations. Companies, suc
 We aim to develop a computer agent that is able to understand 1) what the bike stock limit is and 2) decide how many bikes to move to where without hard coding any rules. The only thing we specify is the reward, which the agent will receive if it manages to keep the number of bikes to be less than 50 at the end of each day (23:00). The agent will also receive penalty based on the number of bikes it moves and if the number of bikes exceed 50.
 
 ### What will be the impact of our work?
-Hopefully the agent can be more precise, timely, and optimized than human agents. If we are successful, doing this may be one step closer to creating a "operational brain" for smart cities. Also, doing this is an attempt to apply Reinforcement Learning in large scale operational and public sector context, which is beyond games and finance.
+Hopefully the agent can be more precise, timely, and optimized than human agents. If we are successful, doing this may be one step closer to creating an "operational brain" for smart cities. Also, doing this is an attempt to apply Reinforcement Learning in large scale operational and public sector context, which is beyond games and finance.
 
 ### How do we measure success (KPIs)?
 We measure if the computer agent can achieve the following without deliberate human programming, but only with reward and penalty based on bike stocks:  
