@@ -59,11 +59,11 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 **Insight 1: The agent was able to recognize the 50 bike stock limit and manage stock effectively and cheaply after some training.** 
 
-The agent recognized the bike stock limit by reward feedback through all training episodes, instead of having "visiblity" to what the human programmer specified.
+The agent recognized the bike stock limit based on reward feedback from all training episodes, instead of having "visiblity" to what the human programmer specified.
 
 ![image](/result_snapshot/stock_history_120180308093154459029.png)
 
-**Figure 1**: Line chart comparison of original houly simulated stock without balancing, and balanced stocks after 1 or 150 training episodes.
+**Figure 1**: Line chart comparison of original hourly simulated stock without balancing, and balanced stocks after 1 or 150 training episodes.
 
 **Insight 2: The agent was able to manage bike stock better after more interactions with the environment.**
 
