@@ -65,7 +65,7 @@ The agent recognized the bike stock limit based on reward feedback from all trai
 
 ![image](/result_snapshot/stock_history_220180310224621355239.png)
 
-**Figure 1-2**: Line chart comparisons of original hourly simulated stock without balancing, and balanced stocks after 1 or 150 training episodes. Figure 1 was a simple linear increasing bike stock. Figure 2 was a randomly generated increasing bike stock.
+**Figure 1-2**: Line chart comparisons of original hourly simulated stock without balancing, and balanced stocks after 1 or 150 training episodes. Figure 1 is an example of using a simple linear increasing bike stock while the one in Figure 2 is a randomly generated.
 
 **Insight: The agent was able to manage bike stock better after more interactions with the environment.**
 
