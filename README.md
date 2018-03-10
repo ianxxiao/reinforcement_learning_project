@@ -1,6 +1,6 @@
 This README includes the following:
 - Project Overview
-- Preliminary Results with On-Going Updates
+- Preliminary Results (WIP, being updated actively)
 - Features under Development
 - Technical Asset Overview
 - Literature Reference
