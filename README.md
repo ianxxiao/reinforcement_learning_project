@@ -90,7 +90,6 @@ Blue indicates relative high reward, red means lower reward. The agent would cho
 ---
 
 ### What is in the development pipeline?
-- Generalize agent training to more complicated traffic flow for a single station (only linear inflow traffic at the moment)
 - Generalize agent training to handle adding and removing bikes in a connected bike station network and traffic flow
 - Experiment with different reward structure and learning parameters to benchmark performances
 - Develop RNN and time series forecasting methods to improve and benchmark agent performance
