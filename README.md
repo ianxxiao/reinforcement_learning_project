@@ -71,7 +71,7 @@ The agent recognized the bike stock limit based on reward feedback from all trai
 
 ![image](/result_snapshot/session_success_rate_2018-03-05101044410867.png)
 
-**Figure 2**: Comparison of success ratio as the number of training episode increases. The success ratio is defined as % of times when the agent limited bikes to be equal or less than 50.
+**Figure 2**: Comparison of success ratio as the number of training episode increases. The success ratio is defined as % of times when the agent limited bikes to be equal or less than 50. This is based on a simple linear bike stock simulation.
 
 **Insight: The agent became more "thoughtful" when moving bikes out of stations after learning from 1500 training episodes.**
 
