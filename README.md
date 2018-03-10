@@ -53,9 +53,9 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 - **Reward / Penalty**: 
     - +10 if the bike stock is equal or less than 50 at hour 23:00
-    - -10 if the bike stock is more than 50 at hour 23:00 (To be updated to every hour, instead of EOD)
+    - -10 if the bike stock is more than 50 at any given hour
     - -0.1 * number of bike removed at each hour
-    - -20 if bike stock becomes negative at any given point (being implemented and tested at the moment)
+    - -20 if bike stock becomes negative at any given hour
 
 **Insight: The agent was able to recognize the 50 bike stock limit and manage stock effectively and cheaply after some training.** 
 
