@@ -13,8 +13,8 @@ from training import trainer
 
 if __name__ == "__main__":
     
-    episode_list = [eps for eps in range(100, 300, 50)]
+    episode_list = [eps for eps in range(1000, 2000, 200)]
     
     trainer = trainer()
-    trainer.start(episode_list, "linear", logging  = 
+    trainer.start(episode_list, "random", logging  = 
                   True, env_debug = False, rl_debug = False)

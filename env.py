@@ -15,6 +15,8 @@ a bike stateion with the following methods:
 
 """
 
+import numpy as np
+
 class env():
     
     def __init__(self, mode, debug):
@@ -22,9 +24,11 @@ class env():
         print("Creating A Bike Environment...")
         
         self.mode = mode
+        self.seed = np.random.random_integers(0, 10)
         self.num_hours = 23
         self.current_hour = 0
-        self.bike_stock = self.generate_stock(mode)
+        self.bike_stock_sim = self.generate_stock(mode) # original copy
+        self.bike_stock = self.bike_stock_sim.copy() # to be reset to original copy every episode
         self.old_stock = self.bike_stock[0]
         self.new_stock = 0
         self.done = False
@@ -46,6 +50,10 @@ class env():
         if mode == "linear":
             for i in range(1, 24):
                 bike_stock.append(bike_stock[i-1]+3)
+                
+        if mode == "random":
+            for i in range(1, 24):
+                bike_stock.append(bike_stock[i-1] + 3 + np.random.random_integers(-5, 5))
         
         return bike_stock
     
@@ -56,12 +64,19 @@ class env():
             print("Current Hour: {}".format(self.current_hour))
             print("Current Stock: {}".format(self.bike_stock[self.current_hour]))
             print("Bikes Moved in Last Hour: {}".format(self.bike_moved))
+            print("Collect {} rewards".format(self.reward))
             print("Will move {} bikes".format(action))
             print("---")
         
         if action != 0:
             self.update_stock(action)
             self.reward = 0.1*action
+            
+        if self.bike_stock[self.current_hour] > 50:
+            self.reward = -10
+            
+        if self.bike_stock[self.current_hour] < 0:
+            self.reward = -20
         
         if self.current_hour == 23:
             if self.bike_stock[self.current_hour] <= 50:
@@ -70,9 +85,9 @@ class env():
                 self.reward = -10
             self.done = True
             self.new_stock = 'terminal'
-        
-        else: 
-            # update to next hour
+
+        # update to next hour
+        if self.current_hour != 23:
             self.update_hour()
             self.old_stock = self.bike_stock[self.current_hour - 1]
             self.new_stock = self.bike_stock[self.current_hour]
@@ -116,7 +131,7 @@ class env():
         
         self.num_hours = 23
         self.current_hour = 0
-        self.bike_stock = self.generate_stock(self.mode)
+        self.bike_stock = self.bike_stock_sim.copy()
         self.done = False
         self.reward = 0
         self.bike_moved = 0

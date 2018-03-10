@@ -53,12 +53,18 @@ class agent():
         
         # find valid action based on current stock 
         # cannot pick an action that lead to negative stock
-        valid_state_action = self.find_valid_action(self.q_table.loc[s, :])
+        
+        # !!!! remove action validation; only rely on reward/penalty !!!
+        # valid_state_action = self.find_valid_action(self.q_table.loc[s, :])
+        
+        valid_state_action = self.q_table.loc[s, :]
                 
         if np.random.uniform() < self.epsilon:
                         
             try:
                 # find the action with the highest expected reward
+                
+                valid_state_action = valid_state_action.reindex(np.random.permutation(valid_state_action.index))
                 action = valid_state_action.idxmax()
             
             except:

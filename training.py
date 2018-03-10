@@ -55,6 +55,8 @@ class trainer():
         self.env_debug = env_debug
         self.rl_debug = rl_debug
         
+        idx = 0
+        
         for eps in self.episodes:
         
             # Initiate new evironment and RL agent
@@ -65,7 +67,7 @@ class trainer():
                                   debug = self.rl_debug)
             
             # Train the RL agent and collect performance stats
-            rewards, final_stocks = self.train_operator(eps, logging = self.logging)
+            rewards, final_stocks = self.train_operator(idx, len(self.episodes), eps, logging = self.logging)
             
             # Log the results from this training session
             self.rewards.append(rewards)
@@ -78,6 +80,8 @@ class trainer():
             # Destroy the environment and agent objects
             self.bike_station = None
             self.operator = None
+            
+            idx += 1
         
         if logging == True:
             
@@ -86,7 +90,7 @@ class trainer():
         return
     
     
-    def train_operator(self, episodes, logging):
+    def train_operator(self, idx, num_sessions, episodes, logging):
     
         '''
         This function trains an RL agent by interacting with the bike station 
@@ -126,8 +130,8 @@ class trainer():
                 
                 if done == True:
                     
-                    print("Episode: {} | Final Stock: {} |Final Reward: {:.2f}".format(eps, 
-                          old_stock, rewards))
+                    print("{} of {} Session | Episode: {} | Final Stock: {} |Final Reward: {:.2f}".format(idx, 
+                          num_sessions, eps, old_stock, rewards))
                     
                     reward_list.append(rewards)
                     final_stocks.append(old_stock)
@@ -291,7 +295,7 @@ class trainer():
             last_eps_idx = len(self.session_action_history[session])-1
             
             fig = plt.figure()
-            title = "Session " + str(session) + " - Original vs. Balanced Bike Stock after" + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
+            title = "Session " + str(session) + " - Original vs. Balanced Bike Stock after " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
             
             x_axis = [x for x in range(len(self.session_stock_history[session][0]))]
             plt.plot(x_axis, self.sim_stock[session], label = "Original without Balancing")
