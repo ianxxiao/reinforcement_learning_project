@@ -12,7 +12,7 @@ This README includes the following:
 We are developing an AI "back-office operator" to balance bikes using Reinforcement Learning and CitiBike data without human knowledge and explicit programming. 
 
 ### What is Reinforcement Learning?
-Reinforcement Learning (RL) program is the "brain" in Google's AlphaGo, Telsa's self-driving car, robots made by Boston Dynamics, and some automatic trading algorithms at Hedge Funds. It is the technique, and some said it is the true AI, that enables autonomous machines. There are various applications beyond the ones we mentioned. Large scale operations with complex constraints and changing conditions, such as Smart City operation and multi-channel digital marketing, are the ideal condidates with lots of untapped potentials.
+Reinforcement Learning (RL) program is the "brain" in Google's AlphaGo, Telsa's self-driving car, robots made by Boston Dynamics, and some automatic trading algorithms at Hedge Funds. It is the technique, and some said it is the true AI, that enables autonomous machines. There are various applications beyond the ones we mentioned. Large scale operations with complex constraints and changing conditions, such as Smart City operation and multi-channel digital marketing, are the ideal condidates. There are lots of untapped potentials to gain productivity and new human-manchine interaction in these domains.
 
 ### How is bike balancing being done now?
 Bikes accumulate or deplete quickly at certain popular locations. Companies, such as CitiBike, spend lots of effort and money to manage bike stock at each station to ensure availability to riders throughout the day. Re-balancing is currently monitored and orchestrated by human based on conversation with citiBike frontline operators.
