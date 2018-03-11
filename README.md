@@ -41,7 +41,7 @@ We measure if the computer agent can achieve the following without deliberate hu
 **Terminology**
 - **Agent**: Reinforcement Learning object acting as a "bike re-balancing operator"
     - Policy: agent's behaviour function, which is a map from state to action
-    - Value Function: how good is each state and / or action
+    - Value Function: a prediction of future rewards
     - Model: agent's representation of the environment
 - **Environment**: a bike station object that will provide feedback such as the number of bikes and reward / penalty
 - **State**: the number of bike stock at a given time
