@@ -40,10 +40,11 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 **Terminology**
 - **Agent**: Reinforcement Learning object acting as a "bike re-balancing operator"
-    - Policy: agent's behaviour function
+    - Policy: agent's behaviour function, which is a map from state to action
     - Value Function: how good is each state and / or action
     - Model: agent's representation of the environment
 - **Environment**: a bike station object that will provide feedback such as the number of bikes and reward / penalty
+- **State**: the number of bike stock at a given time
 - **Training**: interactions between the agent and environment for the agent to learn what the goal is and how to achieve it the best
 - **Episode**: number of independent training session (the environment is reset, but agent keeps the learning from one episode to another); each episode has 24 hour inter-dependent instances with bike stock info based on the environment setup and agent actions
 - **Session**: each session has multiple episodes with both environment and agent reset; the goal is to benchmark agent performances based on the number of episodes (e.g. will more training episode leads to high success ratio? When should we stop the training?)
