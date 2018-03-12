@@ -138,4 +138,3 @@ This script is for creating a trainer class. It has the following methods:
 ### Literature Reference
 - Reinforcement Learning and Simulation-Based Search: http://www0.cs.ucl.ac.uk/staff/d.silver/web/Publications_files/thesis.pdf
 - Optimizing value approximation: http://www0.cs.ucl.ac.uk/staff/d.silver/web/Publications_files/doubledqn.pdf
-- Base Code Signatures: https://morvanzhou.github.io
