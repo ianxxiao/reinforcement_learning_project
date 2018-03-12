@@ -33,7 +33,7 @@ We measure if the computer agent can achieve the following without deliberate hu
 - Can Deep Learning (e.g. RNN) and time series forecasting or simulation techniques improve the performance KPIs (e.g. increase success ratio, lower cost, and shorten learning time)?
 - Can the agent balance multiple stations (e.g. 5 stations with inter-connected traffic flow) at the same time?
 - Can the agent develop its own action space, which is specified by human programmer at the moment?
-- Can parallel learning improve the speed and accuracy of operations in new dynamics?
+- Can parallel learning (Asynchronous Advantaged Actor-Critic)  improve the speed and accuracy of operations in new dynamics?
 
 ---
 ### Preliminary Results and Baseline
