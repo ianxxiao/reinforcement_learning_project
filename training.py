@@ -3,7 +3,7 @@
 """
 Created on Sun Mar  4 15:35:23 2018
 
-@author: Ian
+@author: Ian, Prince, Brenton, Alex
 
 This creates a class for training session with the following methods:
     - start()
@@ -18,7 +18,8 @@ This creates a class for training session with the following methods:
 import numpy as np
 import matplotlib.pyplot as plt
 from env import env
-from rl_brain import agent
+#from rl_brain import agent
+from rl_brain_v2 import DeepQNetwork
 import datetime
 import os
 
@@ -62,9 +63,7 @@ class trainer():
             # Initiate new evironment and RL agent
             self.bike_station = env(self.stock_type, debug = self.env_debug)
             self.sim_stock.append(self.bike_station.get_sim_stock())
-            self.operator = agent(epsilon = 0.9, lr = 0.01, gamma = 0.9, 
-                                  current_stock = self.bike_station.current_stock(), 
-                                  debug = self.rl_debug)
+            self.operator = DeepQNetwork(self.bike_station.n_actions, self.bike_station.n_features, 0.01, 0.9)
             
             # Train the RL agent and collect performance stats
             rewards, final_stocks = self.train_operator(idx, len(self.episodes), eps, logging = self.logging)
@@ -72,7 +71,7 @@ class trainer():
             # Log the results from this training session
             self.rewards.append(rewards)
             self.final_stocks.append(final_stocks)
-            self.q_tables.append(self.operator.get_q_table())
+            #self.q_tables.append(self.operator.get_q_table())
             self.session_action_history.append(self.episode_action_history)
             self.session_stock_history.append(self.episode_stock_history)
             self.reset_episode_history()
@@ -83,9 +82,9 @@ class trainer():
             
             idx += 1
         
-        if logging == True:
+        # if logging == True:
             
-            self.save_session_results(self.get_timestamp(replace = True))
+        #     self.save_session_results(self.get_timestamp(replace = True))
             
         return
     
@@ -122,12 +121,7 @@ class trainer():
                 
                 action = self.operator.choose_action(self.bike_station.get_old_stock())
                 current_hour, old_stock, new_stock, reward, done = self.bike_station.ping(action)
-                self.operator.learn(old_stock, action, reward, new_stock)
-                
-                rewards += reward
-                
-                # Log hourly action history by each episode
-                
+                #observation_, reward, done = self.bike_station.ping(action)
                 if done == True:
                     
                     print("{} of {} Session | Episode: {} | Final Stock: {} |Final Reward: {:.2f}".format(idx, 
@@ -138,11 +132,19 @@ class trainer():
                     rewards = 0
                     
                     # Log session action history by episode
-                    self.episode_action_history.append(self.operator.get_hourly_actions())
-                    self.episode_stock_history.append(self.operator.get_hourly_stocks())
-                    self.operator.reset_hourly_history()
+                    #self.episode_action_history.append(self.operator.get_hourly_actions())
+                    #self.episode_stock_history.append(self.operator.get_hourly_stocks())
+                    #self.operator.reset_hourly_history()
                                     
                     break
+                self.operator.store_transition(old_stock, action, reward, new_stock)
+                #self.operator.learn(old_stock, action, reward, new_stock)
+                self.operator.learn()
+                
+                rewards += reward
+                
+                # Log hourly action history by each episode
+
                             
         return reward_list, final_stocks
     
