@@ -251,7 +251,7 @@ class trainer():
         
         for session in range(len(self.rewards)):
             
-            fig = plt.figure()
+            fig = plt.figure(figsize=(10, 8))
             
             title = "Reward History by Training Session " + str(session) + " - " + timestamp
             
@@ -284,7 +284,7 @@ class trainer():
             first_eps_idx = 0
             last_eps_idx = len(self.session_action_history[session])-1
             
-            fig = plt.figure()
+            fig = plt.figure(figsize=(10, 8))
             title = "Session " + str(session) + " - Hourly Action of Eps " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
             
             x_axis = [x for x in range(len(self.session_action_history[session][0]))]
@@ -312,7 +312,7 @@ class trainer():
             first_eps_idx = 0
             last_eps_idx = len(self.session_action_history[session])-1
             
-            fig = plt.figure()
+            fig = plt.figure(figsize=(10, 8))
             title = "Session " + str(session) + " - Original vs. Balanced Bike Stock after " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
             
             x_axis = [x for x in range(len(self.session_stock_history[session][0]))]
@@ -321,7 +321,8 @@ class trainer():
             plt.plot(x_axis, self.session_stock_history[session][-1], 
                      label = "Balanced Bike Stock - Eps " + str(last_eps_idx))
             
-            plt.axhline(y = 50, c = "r", ls = "--", label = "Stock Limit")
+            plt.axhline(y = 50, c = "r", ls = "--", label = "Upper Stock Limit")
+            plt.axhline(y = 0, c = "r", ls = "--", label = "Lower Stock Limit")
             
             plt.legend()
             plt.xlabel("Hours")
