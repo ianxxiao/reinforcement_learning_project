@@ -18,7 +18,7 @@ This creates a class for training session with the following methods:
 import numpy as np
 import matplotlib.pyplot as plt
 from env import env
-#from rl_brain import agent
+from rl_brain import agent
 from rl_brain_v2 import DeepQNetwork
 import datetime
 import os
@@ -48,13 +48,15 @@ class trainer():
         self.q_tables = []
         
     
-    def start(self, episodes, stock_type, logging, env_debug, rl_debug):
+    def start(self, episodes, stock_type, logging, env_debug, rl_debug, brain="dqn"):
+        #brain: which method to use. Q learning vs DQN
         
         self.episodes = episodes
         self.stock_type = stock_type
         self.logging = logging
         self.env_debug = env_debug
         self.rl_debug = rl_debug
+        self.brain = brain
         
         idx = 0
         
@@ -63,10 +65,20 @@ class trainer():
             # Initiate new evironment and RL agent
             self.bike_station = env(self.stock_type, debug = self.env_debug)
             self.sim_stock.append(self.bike_station.get_sim_stock())
-            self.operator = DeepQNetwork(self.bike_station.n_actions, self.bike_station.n_features, 0.01, 0.9)
+
+            if self.brain == 'q':
+                self.operator = agent(epsilon = 0.9, lr = 0.01, gamma = 0.9, 
+                                  current_stock = self.bike_station.current_stock(), 
+                                  debug = self.rl_debug)
+            elif self.brain == 'dqn':
+                self.operator = DeepQNetwork(self.bike_station.n_actions, self.bike_station.n_features, 0.01, 0.9)
+            else:
+                print("Error: pick correct brain")
+                break
             
             # Train the RL agent and collect performance stats
-            rewards, final_stocks = self.train_operator(idx, len(self.episodes), eps, logging = self.logging)
+            rewards, final_stocks = self.train_operator(idx, len(self.episodes), eps,
+             logging = self.logging, brain = self.brain)
             
             # Log the results from this training session
             self.rewards.append(rewards)
@@ -82,14 +94,14 @@ class trainer():
             
             idx += 1
         
-        # if logging == True:
+        if logging == True:
             
-        #     self.save_session_results(self.get_timestamp(replace = True))
+            self.save_session_results(self.get_timestamp(replace = True))
             
         return
     
     
-    def train_operator(self, idx, num_sessions, episodes, logging):
+    def train_operator(self, idx, num_sessions, episodes, logging, brain):
     
         '''
         This function trains an RL agent by interacting with the bike station 
@@ -132,14 +144,18 @@ class trainer():
                     rewards = 0
                     
                     # Log session action history by episode
-                    #self.episode_action_history.append(self.operator.get_hourly_actions())
-                    #self.episode_stock_history.append(self.operator.get_hourly_stocks())
-                    #self.operator.reset_hourly_history()
+                    if brain == 'q':
+                        self.episode_action_history.append(self.operator.get_hourly_actions())
+                        self.episode_stock_history.append(self.operator.get_hourly_stocks())
+                        self.operator.reset_hourly_history()
                                     
                     break
-                self.operator.store_transition(old_stock, action, reward, new_stock)
-                #self.operator.learn(old_stock, action, reward, new_stock)
-                self.operator.learn()
+
+                if brain == 'q':
+                    self.operator.learn(old_stock, action, reward, new_stock)
+                else:
+                    self.operator.store_transition(old_stock, action, reward, new_stock)
+                    self.operator.learn()
                 
                 rewards += reward
                 

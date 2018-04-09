@@ -14,8 +14,8 @@ from training import trainer
 if __name__ == "__main__":
     
     #episode_list = [eps for eps in range(1000, 2000, 200)]
-    episode_list = [50, 50, 50]
+    episode_list = [10, 10, 10]
     
     trainer = trainer()
     trainer.start(episode_list, "random", logging  = 
-                  False, env_debug = False, rl_debug = False)
+                  False, env_debug = False, rl_debug = False, brain = 'q')
