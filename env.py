@@ -3,7 +3,7 @@
 """
 Created on Sat Mar  3 12:26:58 2018
 
-@author: Ian
+@author: Ian, Prince, Brenton, Alex
 
 This script is for creating an Environment class. Each environment represents
 a bike stateion with the following methods:
@@ -36,7 +36,14 @@ class env():
         self.reward = 0
         self.bike_moved = 0
         self.debug = debug
+
+        self.actions = [-10, -3, -1, 0]
+        self.n_actions = len(self.actions)
+        #features of the observation: hour, old stock, new stock
+        self.n_features = 1
+
         self.citibike_df = 0
+
         
         if self.debug == True:
             print("Generating Bike Stock: {}".format(self.mode))
@@ -150,6 +157,7 @@ class env():
         self.bike_moved = 0
         self.old_stock = self.bike_stock[0]
         self.new_stock = 0
+        #return (self.current_hour, self.old_stock, self.new_stock)
         
     def current_stock(self):
         
@@ -158,7 +166,7 @@ class env():
     def get_sim_stock(self):
         
         return self.bike_stock
-    
+
     
     def process_citibike(self, starting_bal):
         
@@ -276,3 +284,4 @@ class env():
         final_bal = pd.concat([hourBal[["id", "name", "lat", "lon"]], hourBal[bal_col]], axis = 1) 
         
         return final_bal
+
