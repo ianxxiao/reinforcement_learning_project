@@ -95,8 +95,10 @@ class trainer():
             idx += 1
         
         if logging == True:
-            
-            self.save_session_results(self.get_timestamp(replace = True))
+            if self.brain == 'q':
+                self.save_session_results(self.get_timestamp(replace = True))
+            else:
+                self.save_session_results_2(self.get_timestamp(replace = True))
             
         return
     
@@ -138,6 +140,7 @@ class trainer():
                     
                     print("{} of {} Session | Episode: {} | Final Stock: {} |Final Reward: {:.2f}".format(idx, 
                           num_sessions, eps, old_stock, rewards))
+
                     
                     reward_list.append(rewards)
                     final_stocks.append(old_stock)
@@ -148,8 +151,12 @@ class trainer():
                         self.episode_action_history.append(self.operator.get_hourly_actions())
                         self.episode_stock_history.append(self.operator.get_hourly_stocks())
                         self.operator.reset_hourly_history()
+                    else:
+                        self.episode_stock_history.append(self.operator.get_hourly_stocks());
+                        self.operator.reset_hourly_history()
                                     
                     break
+
 
                 if brain == 'q':
                     self.operator.learn(old_stock, action, reward, new_stock)
@@ -160,6 +167,11 @@ class trainer():
                 rewards += reward
                 
                 # Log hourly action history by each episode
+
+
+            with open('dqn_log.txt', 'a') as f:
+                f.write("{} of {} Session | Episode: {} | Final Stock: {} |Final Reward: {:.2f} \n".format(idx, 
+                    num_sessions, eps, old_stock, rewards))
 
                             
         return reward_list, final_stocks
@@ -300,6 +312,46 @@ class trainer():
             fig.savefig(file_path + "/action_history_" + str(session) + timestamp)
         
         
+        # --- Comparison Line Chart of Simulated and Rebalaned Bike Stock --- #
+        file_path = dir_path + "/stock_history"
+        
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)       
+        
+        
+        for session in range(len(self.session_stock_history)):
+            
+            first_eps_idx = 0
+            last_eps_idx = len(self.session_action_history[session])-1
+            
+            fig = plt.figure()
+            title = "Session " + str(session) + " - Original vs. Balanced Bike Stock after " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
+            
+            x_axis = [x for x in range(len(self.session_stock_history[session][0]))]
+            plt.plot(x_axis, self.sim_stock[session], label = "Original without Balancing")
+            plt.plot(x_axis, self.session_stock_history[session][0], label = "Balanced Bike Stock - Eps 0")
+            plt.plot(x_axis, self.session_stock_history[session][-1], 
+                     label = "Balanced Bike Stock - Eps " + str(last_eps_idx))
+            
+            plt.axhline(y = 50, c = "r", ls = "--", label = "Stock Limit")
+            
+            plt.legend()
+            plt.xlabel("Hours")
+            plt.ylabel("Number of Bike Stock")
+            plt.title(title)
+            
+            fig.savefig(file_path + "/stock_history_" + str(session) + timestamp)
+        
+        return
+
+    def save_session_results_2(self, timestamp):
+        dir_path = "./performance_log/" + timestamp
+        
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+            
+        
+         
         # --- Comparison Line Chart of Simulated and Rebalaned Bike Stock --- #
         file_path = dir_path + "/stock_history"
         

@@ -13,9 +13,10 @@ from training import trainer
 
 if __name__ == "__main__":
     
-    #episode_list = [eps for eps in range(1000, 2000, 200)]
-    episode_list = [10, 10, 10]
+    #episode_list = [eps for eps in range(100, 10001, 1000)]
+    episode_list = [eps for eps in range(100, 5001, 1000)]
+    #episode_list = [10, 10, 10]
     
     trainer = trainer()
-    trainer.start(episode_list, "random", logging  = 
-                  False, env_debug = False, rl_debug = False, brain = 'q')
+    trainer.start(episode_list, "linear", logging  = 
+                  True, env_debug = False, rl_debug = False, brain = 'dqn')

@@ -38,6 +38,7 @@ class DeepQNetwork:
         self.batch_size = batch_size
         self.epsilon_increment = e_greedy_increment
         self.epsilon = 0 if e_greedy_increment is not None else self.epsilon_max
+        self.hourly_stock_history = []
         
         # total learning step
         self.learn_step_counter = 0
@@ -112,6 +113,7 @@ class DeepQNetwork:
         # to have batch dimension when feed into tf placeholder
         #observation = observation[np.newaxis, :]
         #print("hello")
+        self.hourly_stock_history.append(observation)
         observation = np.array([[observation]])
 
         if np.random.uniform() < self.epsilon:
@@ -120,8 +122,19 @@ class DeepQNetwork:
             action = np.argmax(actions_value)
         else:
             action = np.random.randint(0, self.n_actions)
+
+        
         return action
+        
+    def get_hourly_stocks(self):
+        
+        return self.hourly_stock_history
+
     
+    def reset_hourly_history(self):
+        
+        # self.hourly_action_history = []
+        self.hourly_stock_history = []
     def _replace_target_params():
         pass
     def learn(self):
