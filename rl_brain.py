@@ -144,7 +144,7 @@ class agent():
                 )
         
         return
-
+    
 
     def find_valid_action(self, state_action):
         
