@@ -22,8 +22,8 @@ class DeepQNetwork:
         learning_rate=0.01,
         reward_decay=0.9,
         e_greedy=0.9,
-        replace_target_iter=5,
-        batch_size=1,
+        replace_target_iter=10,
+        batch_size=5,
         e_greedy_increment=None,
         output_graph=None
         
@@ -34,11 +34,12 @@ class DeepQNetwork:
         self.gamma = reward_decay
         self.epsilon_max = e_greedy
         self.replace_target_iter = replace_target_iter
-        self.memory_size = 500
+        self.memory_size = 100
         self.batch_size = batch_size
         self.epsilon_increment = e_greedy_increment
         self.epsilon = 0 if e_greedy_increment is not None else self.epsilon_max
         self.hourly_stock_history = []
+        self.actions = [-10, -3, -1, 0]
         
         # total learning step
         self.learn_step_counter = 0
@@ -65,7 +66,7 @@ class DeepQNetwork:
         self.cost_his = []
         
         
-    
+    #changed tf.,,.reulu to sigmoid
     def _build_net(self):
         # ------------------ all inputs ------------------------
         self.s = tf.placeholder(tf.float32, [None, self.n_features], name='s')  # input State
@@ -77,14 +78,14 @@ class DeepQNetwork:
 
         # ------------------ build evaluate_net ------------------
         with tf.variable_scope('eval_net', reuse=tf.AUTO_REUSE):
-            e1 = tf.layers.dense(self.s, 20, tf.nn.relu, kernel_initializer=w_initializer,
+            e1 = tf.layers.dense(self.s, 20, tf.sigmoid, kernel_initializer=w_initializer,
                                  bias_initializer=b_initializer, name='e1')
             self.q_eval = tf.layers.dense(e1, self.n_actions, kernel_initializer=w_initializer,
                                           bias_initializer=b_initializer, name='q')
 
         # ------------------ build target_net ------------------
         with tf.variable_scope('target_net', reuse=tf.AUTO_REUSE):
-            t1 = tf.layers.dense(self.s_, 20, tf.nn.relu, kernel_initializer=w_initializer,
+            t1 = tf.layers.dense(self.s_, 20, tf.sigmoid, kernel_initializer=w_initializer,
                                  bias_initializer=b_initializer, name='t1')
             self.q_next = tf.layers.dense(t1, self.n_actions, kernel_initializer=w_initializer,
                                           bias_initializer=b_initializer, name='t2')
@@ -119,12 +120,18 @@ class DeepQNetwork:
         if np.random.uniform() < self.epsilon:
             # forward feed the observation and get q value for every actions
             actions_value = self.sess.run(self.q_eval, feed_dict={self.s: observation})
+            print(">>>>>> action value: {} <<<<<<".format(actions_value))
             action = np.argmax(actions_value)
         else:
             action = np.random.randint(0, self.n_actions)
 
         
+        # print('>>>> {} <<<<'.format(val))
+
+
+        
         return action
+
         
     def get_hourly_stocks(self):
         

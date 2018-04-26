@@ -46,6 +46,7 @@ class trainer():
         self.session_action_history = []
         self.session_stock_history = []
         self.q_tables = []
+        self.actions = [-10, -3, -1, 0]
         
     
     def start(self, episodes, stock_type, logging, env_debug, rl_debug, brain="dqn"):
@@ -119,6 +120,7 @@ class trainer():
         rewards = 0
         reward_list = []
         final_stocks = []
+        step = 0
         
         for eps in range(episodes):
             
@@ -134,7 +136,14 @@ class trainer():
                 # Reset bike station environment to start a new day, repeat all
                 
                 action = self.operator.choose_action(self.bike_station.get_old_stock())
-                current_hour, old_stock, new_stock, reward, done = self.bike_station.ping(action)
+                if self.brain == 'q':
+                    current_hour, old_stock, new_stock, reward, done = self.bike_station.ping(action)
+
+                else:
+                    current_hour, old_stock, new_stock, reward, done = self.bike_station.ping_dqn(action)
+                    self.operator.store_transition(old_stock, action, reward, new_stock)
+                    if step > 50 and (step % 10 == 0):
+                        self.operator.learn()
                 #observation_, reward, done = self.bike_station.ping(action)
                 if done == True:
                     
@@ -160,10 +169,10 @@ class trainer():
 
                 if brain == 'q':
                     self.operator.learn(old_stock, action, reward, new_stock)
-                else:
-                    self.operator.store_transition(old_stock, action, reward, new_stock)
-                    self.operator.learn()
                 
+
+
+                step +=1
                 rewards += reward
                 
                 # Log hourly action history by each episode
