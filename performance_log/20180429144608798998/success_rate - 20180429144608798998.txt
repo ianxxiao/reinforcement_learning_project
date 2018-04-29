@@ -1,0 +1,10 @@
+Logged at 2018-04-29 14:46:08.807769
+This training session ran episodes: [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000]
+Session 0 | Episodes: 1000 | Success Rate: 89.50%
+Session 1 | Episodes: 2000 | Success Rate: 88.60%
+Session 2 | Episodes: 3000 | Success Rate: 85.10%
+Session 3 | Episodes: 4000 | Success Rate: 88.25%
+Session 4 | Episodes: 5000 | Success Rate: 92.02%
+Session 5 | Episodes: 6000 | Success Rate: 71.95%
+Session 6 | Episodes: 7000 | Success Rate: 89.79%
+Session 7 | Episodes: 8000 | Success Rate: 75.00%

@@ -13,6 +13,7 @@ from training import trainer
 
 if __name__ == "__main__":
     
+    #DUMMY UPDATE --- IAN#
 
     #training dqn model
     #episode_list = [eps for eps in range(100, 10001, 1000)]
