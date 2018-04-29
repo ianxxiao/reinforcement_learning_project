@@ -48,7 +48,7 @@ class env():
         self.expected_stock = self.exp_bike_stock[0]
         self.expected_stock_new = 0
 
-        self.actions = [-20, -15, -10, -5, 0, 5, 10, 15, 20]
+        self.actions = [-10, -3, -1, 0]
         self.n_actions = len(self.actions)
         #features of the observation: hour, old stock, new stock
         self.n_features = 1
@@ -76,7 +76,7 @@ class env():
             for i in range(1, 24):
                 bike_stock.append(bike_stock[i-1] + 3 + np.random.random_integers(-5, 5))
                 
-        if mode == "actual_1":
+        if mode == "actual":
             
             print("loading and processing citiBike Data ...")
             self.citibike_df = self.process_citibike(20)

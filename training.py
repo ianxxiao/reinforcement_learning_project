@@ -38,6 +38,7 @@ class trainer():
         self.sim_stock = []
         self.model_based = False
         self.ID = None
+        self.method = None
         
         # Performance Metric
         self.success_ratio = 0
@@ -52,7 +53,7 @@ class trainer():
         self.actions = [-10, -3, -1, 0]
         
     
-    def start(self, episodes, stock_type, logging, env_debug, rl_debug, ID, model_based, brain="dqn"):
+    def start(self, episodes, stock_type, logging, env_debug, rl_debug, brain, ID, model_based):
         #brain: which method to use. Q learning vs DQN
         
         self.episodes = episodes
@@ -63,6 +64,13 @@ class trainer():
         self.brain = brain
         self.ID = ID
         self.model_based = model_based
+        
+        if brain == 'q' and model_based == False:
+            self.method = 'QLN'
+        elif brain == 'q' and model_based == True:
+            self.method = 'FCT'
+        else:
+            self.method = 'DQN'
         
         idx = 0
         
@@ -86,7 +94,7 @@ class trainer():
             
             # Train the RL agent and collect performance stats
             rewards, final_stocks = self.train_operator(idx, len(self.episodes), eps,
-             logging = self.logging, brain = self.brain, model_based = self.model_based)
+            logging = self.logging, brain = self.brain, model_based = self.model_based)
             
             # Log the results from this training session
             self.rewards.append(rewards)
@@ -107,7 +115,7 @@ class trainer():
             if self.brain == 'q':
                 self.save_session_results(self.get_timestamp(replace = True))
             else:
-                self.save_session_results_2(self.get_timestamp(replace = True))
+                self.save_session_results_dqn(self.get_timestamp(replace = True))
             
         return
     
@@ -349,7 +357,7 @@ class trainer():
             last_eps_idx = len(self.session_action_history[session])-1
             
             fig = plt.figure(figsize=(10, 8))
-            title = "Session " + str(session) + " - Original vs. Balanced Bike Stock after " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
+            title = "[" + self.method + "]" + "Session " + str(session) + " - Original vs. Balanced Bike Stock after " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
             
             x_axis = [x for x in range(len(self.session_stock_history[session][0]))]
             plt.plot(x_axis, self.sim_stock[session], label = "Original without Balancing")
@@ -369,14 +377,12 @@ class trainer():
         
         return
 
-    def save_session_results_2(self, timestamp):
+    def save_session_results_dqn(self, timestamp):
         dir_path = "./performance_log/" + timestamp
         
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
             
-        
-         
         # --- Comparison Line Chart of Simulated and Rebalaned Bike Stock --- #
         file_path = dir_path + "/stock_history"
         
@@ -389,8 +395,8 @@ class trainer():
             first_eps_idx = 0
             last_eps_idx = len(self.session_action_history[session])-1
             
-            fig = plt.figure()
-            title = "[DQN] Session " + str(session) + " - Original vs. Balanced Bike Stock after " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
+            fig = plt.figure(figsize=(10, 8))
+            title = "[" + self.method + "]" + " Session " + str(session) + " - Original vs. Balanced Bike Stock after " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
             
             x_axis = [x for x in range(len(self.session_stock_history[session][0]))]
             plt.plot(x_axis, self.sim_stock[session], label = "Original without Balancing")
@@ -398,7 +404,8 @@ class trainer():
             plt.plot(x_axis, self.session_stock_history[session][-1], 
                      label = "Balanced Bike Stock - Eps " + str(last_eps_idx))
             
-            plt.axhline(y = 50, c = "r", ls = "--", label = "Stock Limit")
+            plt.axhline(y = 50, c = "r", ls = "--", label = "Upper Stock Limit")
+            plt.axhline(y = 0, c = "r", ls = "--", label = "Lower Stock Limit")
             
             plt.legend()
             plt.xlabel("Hours")
