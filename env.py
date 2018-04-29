@@ -43,6 +43,7 @@ class env():
         self.n_features = 1
 
         self.citibike_df = 0
+        self.game_over = False
 
         
         if self.debug == True:
@@ -77,6 +78,34 @@ class env():
         return bike_stock
     
     
+    def ping_dqn(self, index):
+        action = self.actions[index]
+        if action != 0:
+            self.update_stock(action)
+            self.reward = 0.5*action
+            
+        if self.bike_stock[self.current_hour] > 50:
+            self.reward = -30
+            
+        if self.bike_stock[self.current_hour] < 0:
+            self.reward = -30
+        
+        if self.current_hour == 23:
+            if self.bike_stock[self.current_hour] <= 50:
+                self.reward = 20
+            else: 
+                self.reward = -20
+            self.done = True
+
+        if self.current_hour != 23:
+            self.update_hour()
+            self.old_stock = self.bike_stock[self.current_hour - 1]
+            self.new_stock = self.bike_stock[self.current_hour]
+            
+        return self.current_hour, self.old_stock, self.new_stock, self.reward, self.done
+
+
+
     def ping(self, action):
         
         # share back t+1 stock, reward of t, and termination status
@@ -104,7 +133,8 @@ class env():
             else: 
                 self.reward = -20
             self.done = True
-            self.new_stock = 'terminal'
+            #self.new_stock = 'terminal'
+            self.game_over = True
 
         # update to next hour
         if self.current_hour != 23:
@@ -112,7 +142,7 @@ class env():
             self.old_stock = self.bike_stock[self.current_hour - 1]
             self.new_stock = self.bike_stock[self.current_hour]
             
-        return self.current_hour, self.old_stock, self.new_stock, self.reward, self.done
+        return self.current_hour, self.old_stock, self.new_stock, self.reward, self.done, self.game_over
     
     def get_old_stock(self):
         

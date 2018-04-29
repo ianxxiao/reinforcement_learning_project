@@ -92,7 +92,7 @@ class agent():
         return action
  
     
-    def learn(self, s, a, r, s_):
+    def learn(self, s, a, r, s_, g):
         
         '''
         This function updates Q tables after each interaction with the
@@ -114,7 +114,7 @@ class agent():
         self.check_state_exist(s_)
         q_predict = self.q_table.loc[s, a]
         
-        if s_ != 'terminal':
+        if g == False:
             
             # Updated Q Target Value if it is not end of day  
             q_target = r + self.gamma * self.q_table.loc[s_, :].max()
