@@ -14,7 +14,15 @@ from training import trainer
 if __name__ == "__main__":
     
 
-    #episode_list = [eps for eps in range(1000, 2000, 200)]
+    #training dqn model
+    #episode_list = [eps for eps in range(100, 10001, 1000)]
+    #episode_list = [eps for eps in range(100, 5001, 1000)]
+    #episode_list = [10, 10, 10]
+    
+    #trainer = trainer()
+
+
+    episode_list = [eps for eps in range(1000, 2000, 200)]
     #episode_list = [10, 10, 10]
     
     #trainer = trainer()
@@ -23,6 +31,7 @@ if __name__ == "__main__":
 
     
     # Train an Agent
+
     episode_list = [eps for eps in range(100, 150, 100)]
     ID = int(input('Enter station ID (integer): '))
     brain = input("Enter agent type (q or dqn): ")
@@ -32,6 +41,7 @@ if __name__ == "__main__":
             model_based = True
         else:
             model_based = False
+
     
     trainer = trainer()
     
@@ -41,11 +51,11 @@ if __name__ == "__main__":
     # actual_1: randomly pick traffic from one citibike stations
     # -------------------------------
     
+
     trainer.start(episode_list, "actual_1", logging  = 
                   True, env_debug = False, rl_debug = False,
                   brain=brain, ID = ID, model_based = model_based)
 
-    
     # Run an Agent
     
     # TO BE DEVELOPED
