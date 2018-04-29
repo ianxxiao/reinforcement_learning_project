@@ -20,29 +20,33 @@ import pandas as pd
 class agent():
     
     
-    def __init__(self, epsilon, lr, gamma, current_stock, debug):
+    def __init__(self, epsilon, lr, gamma, current_stock, debug, expected_stock, model_based):
         
         print("Created an Agent ...")
-        self.actions = [-10, -3, -1, 0]
+        self.actions = [-20, -15, -10, -5, 0, 5, 10, 15, 20]
         self.reward = 0
         self.epsilon = epsilon
         self.lr = lr
         self.gamma = gamma
         self.debug = debug
         self.current_stock = current_stock
+        self.expected_stock = expected_stock
+        self.model_based = model_based
         
         # performance metric
         self.q_table = pd.DataFrame(columns = self.actions, dtype = np.float64)
         self.hourly_action_history = []
         self.hourly_stock_history = []
        
-    def choose_action(self, s):
+    def choose_action(self, s, ex):
         
         '''
         This funciton choose an action based on Q Table. It also does 
         validation to ensure stock will not be negative after moving bikes.
         Input: 
             - s: current bike stock
+            - ex: expected bike stock in subsequent hour (based on random forests prediction)
+        
         Output:
             - action: number of bikes to move
         
@@ -50,14 +54,24 @@ class agent():
         
         self.check_state_exist(s)
         self.current_stock = s
+        self.expected_stock = ex
         
         # find valid action based on current stock 
         # cannot pick an action that lead to negative stock
         
         # !!!! remove action validation; only rely on reward/penalty !!!
         # valid_state_action = self.find_valid_action(self.q_table.loc[s, :])
-        
-        valid_state_action = self.q_table.loc[s, :]
+        if self.model_based == True:
+            #Take an average of current stock and expected stock
+            try:
+                avg = int(round(0.5*s + 0.5*ex))
+            except:
+                avg = s
+            self.check_state_exist(avg)
+            valid_state_action = self.q_table.loc[avg, :]
+
+        elif self.model_based == False:
+            valid_state_action = self.q_table.loc[s, :]
                 
         if np.random.uniform() < self.epsilon:
                         
@@ -92,13 +106,14 @@ class agent():
         return action
  
     
-    def learn(self, s, a, r, s_):
+    def learn(self, s, a, r, s_, ex):
         
         '''
         This function updates Q tables after each interaction with the
         environment.
         Input: 
             - s: current bike stock
+            - ex: expected bike stock in next hour
             - a: current action (number of bikes to move)
             - r: reward received from current state
             - s_: new bike stock based on bike moved and new stock
@@ -112,19 +127,26 @@ class agent():
             print("---")
         
         self.check_state_exist(s_)
-        q_predict = self.q_table.loc[s, a]
+
+        if self.model_based == False:
+            q_predict = self.q_table.loc[s, a]
+        elif self.model_based == True:
+            avg = int(round(0.5*s + 0.5*ex))
+            self.check_state_exist(avg)
+            q_predict = self.q_table.loc[avg, a]
         
         if s_ != 'terminal':
-            
             # Updated Q Target Value if it is not end of day  
             q_target = r + self.gamma * self.q_table.loc[s_, :].max()
         
         else:
-            
             # Update Q Target Value as Immediate reward if end of day
             q_target = r
-            
-        self.q_table.loc[s, a] += self.lr * (q_target - q_predict)
+
+        if self.model_based == False:
+            self.q_table.loc[s, a] += self.lr * (q_target - q_predict)
+        elif self.model_based == True:
+            self.q_table.loc[avg, a] += self.lr * (q_target - q_predict)
         
         return
 
