@@ -157,7 +157,7 @@ class env():
             
 
         return self.current_hour, self.old_stock, self.new_stock, self.expected_stock,
-self.expected_stock_new, self.reward, self.done, self.game_over
+        self.expected_stock_new, self.reward, self.done, self.game_over
     
     def get_old_stock(self):
         
