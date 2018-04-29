@@ -1,0 +1,12 @@
+Logged at 2018-04-03 21:54:31.871980
+This training session ran episodes: [100, 1100, 2100, 3100, 4100, 5100, 6100, 7100, 8100, 9100]
+Session 0 | Episodes: 100 | Success Rate: 100.00%
+Session 1 | Episodes: 1100 | Success Rate: 93.00%
+Session 2 | Episodes: 2100 | Success Rate: 99.71%
+Session 3 | Episodes: 3100 | Success Rate: 25.23%
+Session 4 | Episodes: 4100 | Success Rate: 20.93%
+Session 5 | Episodes: 5100 | Success Rate: 47.00%
+Session 6 | Episodes: 6100 | Success Rate: 97.89%
+Session 7 | Episodes: 7100 | Success Rate: 99.52%
+Session 8 | Episodes: 8100 | Success Rate: 70.17%
+Session 9 | Episodes: 9100 | Success Rate: 94.74%
