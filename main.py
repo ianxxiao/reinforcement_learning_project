@@ -23,7 +23,7 @@ if __name__ == "__main__":
     #trainer = trainer()
 
 
-    episode_list = [eps for eps in range(1000, 2000, 200)]
+    #episode_list = [eps for eps in range(1000, 2000, 200)]
     #episode_list = [10, 10, 10]
     
     #trainer = trainer()
@@ -42,6 +42,8 @@ if __name__ == "__main__":
             model_based = True
         else:
             model_based = False
+    if brain == 'dqn':
+        model_based = False
 
     
     trainer = trainer()

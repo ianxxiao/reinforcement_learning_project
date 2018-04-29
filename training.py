@@ -143,12 +143,14 @@ class trainer():
                 # Repeat until end of day (23 hours)
                 # Reset bike station environment to start a new day, repeat all
                 
-                action = self.operator.choose_action(self.bike_station.get_old_stock(),
-                                                     self.bike_station.get_expected_stock())
+                
                 if self.brain == 'q':
+                    action = self.operator.choose_action(self.bike_station.get_old_stock(),
+                                                     self.bike_station.get_expected_stock())
                     current_hour, old_stock, new_stock, expected_stock, _, reward, done, game_over = self.bike_station.ping(action)
 
                 else:
+                    action = self.operator.choose_action(self.bike_station.get_old_stock())
                     current_hour, old_stock, new_stock, reward, done = self.bike_station.ping_dqn(action)
                     self.operator.store_transition(old_stock, action, reward, new_stock)
                     if step > 50 and (step % 10 == 0):
@@ -403,7 +405,7 @@ class trainer():
             plt.ylabel("Number of Bike Stock")
             plt.title(title)
             
-            fig.savefig(file_path + "/stock_history_" + +"DQN" + str(session) + timestamp)
+            fig.savefig(file_path + "/stock_history_" + "DQN" + str(session) + timestamp)
         
         return
     
