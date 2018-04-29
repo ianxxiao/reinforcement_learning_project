@@ -30,6 +30,7 @@ if __name__ == "__main__":
         # TO DO: Brenton to add the citi_df as a parameter to trainer()
         # i.e. trainer(citi_df)
         # update the subsequent trainer init workflow
+        # Run a end to end test
         
         trainer_QLN = trainer()
         trainer_FCT = trainer()
