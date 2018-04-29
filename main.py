@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     
     # Train an Agent
-    #episode_list = [eps for eps in range(300, 301, 100)]
+    #episode_list = [eps for eps in range(300, 1001, 100)]
     
     trainer = trainer()
     
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     #               True, env_debug = False, rl_debug = False, brain='q')
     
     trainer.start(episode_list, "linear", logging  = 
-                 True, env_debug = False, rl_debug = False, brain = 'dqn')    
+                 True, env_debug = False, rl_debug = False, brain = 'q')    
     # Run an Agent
     
     # TO BE DEVELOPED

@@ -43,6 +43,7 @@ class env():
         self.n_features = 1
 
         self.citibike_df = 0
+        self.game_over = False
 
         
         if self.debug == True:
@@ -133,6 +134,7 @@ class env():
                 self.reward = -20
             self.done = True
             #self.new_stock = 'terminal'
+            self.game_over = True
 
         # update to next hour
         if self.current_hour != 23:
@@ -140,7 +142,7 @@ class env():
             self.old_stock = self.bike_stock[self.current_hour - 1]
             self.new_stock = self.bike_stock[self.current_hour]
             
-        return self.current_hour, self.old_stock, self.new_stock, self.reward, self.done
+        return self.current_hour, self.old_stock, self.new_stock, self.reward, self.done, self.game_over
     
     def get_old_stock(self):
         

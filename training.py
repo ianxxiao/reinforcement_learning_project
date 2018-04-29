@@ -137,7 +137,7 @@ class trainer():
                 
                 action = self.operator.choose_action(self.bike_station.get_old_stock())
                 if self.brain == 'q':
-                    current_hour, old_stock, new_stock, reward, done = self.bike_station.ping(action)
+                    current_hour, old_stock, new_stock, reward, done, game_over = self.bike_station.ping(action)
 
                 else:
                     current_hour, old_stock, new_stock, reward, done = self.bike_station.ping_dqn(action)
@@ -168,7 +168,7 @@ class trainer():
 
 
                 if brain == 'q':
-                    self.operator.learn(old_stock, action, reward, new_stock)
+                    self.operator.learn(old_stock, action, reward, new_stock, game_over)
                 
 
 
