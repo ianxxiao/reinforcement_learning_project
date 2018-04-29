@@ -39,7 +39,6 @@ class DeepQNetwork:
         self.epsilon_increment = e_greedy_increment
         self.epsilon = 0 if e_greedy_increment is not None else self.epsilon_max
         self.hourly_stock_history = []
-        self.actions = [-10, -3, -1, 0]
         
         # total learning step
         self.learn_step_counter = 0
@@ -120,7 +119,7 @@ class DeepQNetwork:
         if np.random.uniform() < self.epsilon:
             # forward feed the observation and get q value for every actions
             actions_value = self.sess.run(self.q_eval, feed_dict={self.s: observation})
-            print(">>>>>> action value: {} <<<<<<".format(actions_value))
+            #print(">>>>>> action value: {} <<<<<<".format(actions_value))
             action = np.argmax(actions_value)
         else:
             action = np.random.randint(0, self.n_actions)

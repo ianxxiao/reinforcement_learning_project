@@ -375,7 +375,7 @@ class trainer():
             last_eps_idx = len(self.session_action_history[session])-1
             
             fig = plt.figure()
-            title = "Session " + str(session) + " - Original vs. Balanced Bike Stock after " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
+            title = "[DQN] Session " + str(session) + " - Original vs. Balanced Bike Stock after " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
             
             x_axis = [x for x in range(len(self.session_stock_history[session][0]))]
             plt.plot(x_axis, self.sim_stock[session], label = "Original without Balancing")
@@ -390,7 +390,7 @@ class trainer():
             plt.ylabel("Number of Bike Stock")
             plt.title(title)
             
-            fig.savefig(file_path + "/stock_history_" + str(session) + timestamp)
+            fig.savefig(file_path + "/stock_history_" + +"DQN" + str(session) + timestamp)
         
         return
     
