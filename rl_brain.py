@@ -23,7 +23,7 @@ class agent():
     def __init__(self, epsilon, lr, gamma, current_stock, debug, expected_stock, model_based):
         
         print("Created an Agent ...")
-        self.actions = [-20, -15, -10, -5, 0, 5, 10, 15, 20]
+        self.actions = [-10, -3, -1, 0]
         self.reward = 0
         self.epsilon = epsilon
         self.lr = lr
