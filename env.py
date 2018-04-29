@@ -6,7 +6,7 @@ Created on Sat Mar  3 12:26:58 2018
 @author: Ian, Prince, Brenton, Alex
 
 This script is for creating an Environment class. Each environment represents
-a bike stateion with the following methods:
+a bike station with the following methods:
     1) generate: this initialize bike station with stock characteristics
     2) ping: this communicates with RL Agent with current stock info, reward,
                 and episode termination status; iterate to new hour
@@ -17,10 +17,13 @@ a bike stateion with the following methods:
 
 import numpy as np
 import pandas as pd
+import json
+with open('EXPECTED_BALANCES.json') as json_data:
+    expected_balance = json.load(json_data)
 
 class env():
     
-    def __init__(self, mode, debug):
+    def __init__(self, mode, debug, ID):
         
         print("Creating A Bike Environment...")
         
@@ -28,7 +31,7 @@ class env():
         self.seed = np.random.random_integers(0, 10)
         self.num_hours = 23
         self.current_hour = 0
-        self.bike_stock_sim = self.generate_stock(mode) # original copy
+        self.bike_stock_sim = self.generate_stock(mode, ID) # original copy
         self.bike_stock = self.bike_stock_sim.copy() # to be reset to original copy every episode
         self.old_stock = self.bike_stock[0]
         self.new_stock = 0
@@ -36,8 +39,16 @@ class env():
         self.reward = 0
         self.bike_moved = 0
         self.debug = debug
+        self.ID = str(ID)
 
-        self.actions = [-10, -3, -1, 0]
+        #exp_bike_stock is list of expected balances in next hour
+        #Predictions based on Random Forests model
+        self.exp_bike_stock_sim = list(np.append(expected_balance[self.ID], None)) 
+        self.exp_bike_stock = self.exp_bike_stock_sim.copy()
+        self.expected_stock = self.exp_bike_stock[0]
+        self.expected_stock_new = 0
+
+        self.actions = [-20, -15, -10, -5, 0, 5, 10, 15, 20]
         self.n_actions = len(self.actions)
         #features of the observation: hour, old stock, new stock
         self.n_features = 1
@@ -50,7 +61,7 @@ class env():
             print("Generating Bike Stock: {}".format(self.mode))
             print("Bike Stock: {}".format(self.bike_stock))
         
-    def generate_stock(self, mode):
+    def generate_stock(self, mode, ID):
         
         # generate a list of 24 hourly bike stock based on mode
         # mode: linear, random, real based on citiBike Data
@@ -70,9 +81,8 @@ class env():
             print("loading and processing citiBike Data ...")
             self.citibike_df = self.process_citibike(20)
             
-            # randomly pick a bike station
-            bike_stock = np.array(self.citibike_df.sample(n = 1))[0][4:28].tolist()
-            
+            #Pick a bike station
+            bike_stock = list(np.array(self.citibike_df[self.citibike_df['id'] == ID])[0][4:28])
             print(bike_stock)
             
         return bike_stock
@@ -119,7 +129,7 @@ class env():
         
         if action != 0:
             self.update_stock(action)
-            self.reward = 0.5*action
+            self.reward = -0.5*np.abs(action)
             
         if self.bike_stock[self.current_hour] > 50:
             self.reward = -30
@@ -141,12 +151,23 @@ class env():
             self.update_hour()
             self.old_stock = self.bike_stock[self.current_hour - 1]
             self.new_stock = self.bike_stock[self.current_hour]
+            self.expected_stock = self.exp_bike_stock[self.current_hour - 1]
+            if self.current_hour < 23:
+                self.expected_stock_new = self.exp_bike_stock[self.current_hour]
             
-        return self.current_hour, self.old_stock, self.new_stock, self.reward, self.done, self.game_over
+
+        return self.current_hour, self.old_stock, self.new_stock, self.expected_stock,
+self.expected_stock_new, self.reward, self.done, self.game_over
     
     def get_old_stock(self):
         
         return self.old_stock
+
+    def get_expected_stock(self):
+        if self.current_hour < 23:
+            return self.expected_stock
+        else:
+            return None
     
     def update_stock(self, num_bike):
         
@@ -154,6 +175,8 @@ class env():
         if self.current_hour != 23:
             for hour in range(self.current_hour+1, len(self.bike_stock)):
                 self.bike_stock[hour] += num_bike
+                if hour < len(self.bike_stock)-1:
+                    self.exp_bike_stock[hour] += num_bike
                 
             self.bike_moved = num_bike
         
@@ -182,11 +205,14 @@ class env():
         self.num_hours = 23
         self.current_hour = 0
         self.bike_stock = self.bike_stock_sim.copy()
+        self.exp_bike_stock = self.exp_bike_stock_sim.copy()
         self.done = False
         self.reward = 0
         self.bike_moved = 0
         self.old_stock = self.bike_stock[0]
         self.new_stock = 0
+        self.expected_stock = self.exp_bike_stock[0]
+        self.expected_stock_new = 0
         #return (self.current_hour, self.old_stock, self.new_stock)
         
     def current_stock(self):

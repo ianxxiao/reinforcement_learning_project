@@ -36,10 +36,13 @@ class trainer():
         self.bike_station = None
         self.operator = None
         self.sim_stock = []
+        self.model_based = False
+        self.ID = None
         
         # Performance Metric
         self.success_ratio = 0
         self.rewards = []  # [[r from session 1], [r from session 2] ...]
+        self.avg_rewards = [] #[np.mean([r from session 1]), np.mean([r from session 2])...]
         self.final_stocks = [] # [[stock from session 1], [stock from session 2] ...]
         self.episode_action_history = []
         self.episode_stock_history = []
@@ -49,7 +52,7 @@ class trainer():
         self.actions = [-10, -3, -1, 0]
         
     
-    def start(self, episodes, stock_type, logging, env_debug, rl_debug, brain="dqn"):
+    def start(self, episodes, stock_type, logging, env_debug, rl_debug, ID, model_based, brain="dqn"):
         #brain: which method to use. Q learning vs DQN
         
         self.episodes = episodes
@@ -58,19 +61,23 @@ class trainer():
         self.env_debug = env_debug
         self.rl_debug = rl_debug
         self.brain = brain
+        self.ID = ID
+        self.model_based = model_based
         
         idx = 0
         
         for eps in self.episodes:
         
             # Initiate new evironment and RL agent
-            self.bike_station = env(self.stock_type, debug = self.env_debug)
+            self.bike_station = env(self.stock_type, debug = self.env_debug, ID = self.ID)
             self.sim_stock.append(self.bike_station.get_sim_stock())
 
             if self.brain == 'q':
                 self.operator = agent(epsilon = 0.9, lr = 0.01, gamma = 0.9, 
                                   current_stock = self.bike_station.current_stock(), 
-                                  debug = self.rl_debug)
+                                  debug = self.rl_debug,
+                                  expected_stock = self.bike_station.get_expected_stock(),
+                                  model_based = model_based)
             elif self.brain == 'dqn':
                 self.operator = DeepQNetwork(self.bike_station.n_actions, self.bike_station.n_features, 0.01, 0.9)
             else:
@@ -79,10 +86,11 @@ class trainer():
             
             # Train the RL agent and collect performance stats
             rewards, final_stocks = self.train_operator(idx, len(self.episodes), eps,
-             logging = self.logging, brain = self.brain)
+             logging = self.logging, brain = self.brain, model_based = self.model_based)
             
             # Log the results from this training session
             self.rewards.append(rewards)
+            self.avg_rewards.append(np.mean(rewards))
             self.final_stocks.append(final_stocks)
             #self.q_tables.append(self.operator.get_q_table())
             self.session_action_history.append(self.episode_action_history)
@@ -104,7 +112,7 @@ class trainer():
         return
     
     
-    def train_operator(self, idx, num_sessions, episodes, logging, brain):
+    def train_operator(self, idx, num_sessions, episodes, logging, brain, model_based):
     
         '''
         This function trains an RL agent by interacting with the bike station 
@@ -135,15 +143,17 @@ class trainer():
                 # Repeat until end of day (23 hours)
                 # Reset bike station environment to start a new day, repeat all
                 
-                action = self.operator.choose_action(self.bike_station.get_old_stock())
+                action = self.operator.choose_action(self.bike_station.get_old_stock(),
+                                                     self.bike_station.get_expected_stock())
                 if self.brain == 'q':
-                    current_hour, old_stock, new_stock, reward, done, game_over = self.bike_station.ping(action)
+                    current_hour, old_stock, new_stock, expected_stock, _, reward, done, game_over = self.bike_station.ping(action)
 
                 else:
                     current_hour, old_stock, new_stock, reward, done = self.bike_station.ping_dqn(action)
                     self.operator.store_transition(old_stock, action, reward, new_stock)
                     if step > 50 and (step % 10 == 0):
                         self.operator.learn()
+
                 #observation_, reward, done = self.bike_station.ping(action)
                 if done == True:
                     
@@ -168,8 +178,8 @@ class trainer():
 
 
                 if brain == 'q':
-                    self.operator.learn(old_stock, action, reward, new_stock, game_over)
-                
+
+                    self.operator.learn(old_stock, action, reward, new_stock, expected_stock, game_over)
 
 
                 step +=1
@@ -210,13 +220,16 @@ class trainer():
         print("===== Performance =====")
         
         for session in range(len(self.final_stocks)):
-            
+            length = len(self.final_stocks[session])
             num_overstock = np.count_nonzero(np.array(self.final_stocks[session]) > 50)
-            num_understock = np.count_nonzero(np.array(self.final_stocks[session]) <= 50)
-            ratio = num_understock*100 / (num_overstock + num_understock)
+            num_understock = np.count_nonzero(np.array(self.final_stocks[session]) <= 0)
+            ratio = (length - num_understock - num_overstock)*100 / length
             
             print("Session {} | Overstock {} Times | Understock {} Times | {}% Successful".format(session, num_overstock, 
                   num_understock, ratio))
+
+            average_reward = round(self.avg_rewards[session], 2)
+            print("Average Episode Reward for Session: {}".format(average_reward))
             
             successful_stocking.append(ratio)
         

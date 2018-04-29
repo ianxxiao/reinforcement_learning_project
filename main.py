@@ -31,7 +31,17 @@ if __name__ == "__main__":
 
     
     # Train an Agent
-    #episode_list = [eps for eps in range(300, 1001, 100)]
+
+    episode_list = [eps for eps in range(100, 150, 100)]
+    ID = int(input('Enter station ID (integer): '))
+    brain = input("Enter agent type (q or dqn): ")
+    if brain == 'q':
+        modeled = input("Model-based? Y or N: ")
+        if modeled == 'Y':
+            model_based = True
+        else:
+            model_based = False
+
     
     trainer = trainer()
     
@@ -41,11 +51,11 @@ if __name__ == "__main__":
     # actual_1: randomly pick traffic from one citibike stations
     # -------------------------------
     
-    # trainer.start(episode_list, "actual_1", logging  = 
-    #               True, env_debug = False, rl_debug = False, brain='q')
-    
-    trainer.start(episode_list, "linear", logging  = 
-                 True, env_debug = False, rl_debug = False, brain = 'q')    
+
+    trainer.start(episode_list, "actual_1", logging  = 
+                  True, env_debug = False, rl_debug = False,
+                  brain=brain, ID = ID, model_based = model_based)
+
     # Run an Agent
     
     # TO BE DEVELOPED
