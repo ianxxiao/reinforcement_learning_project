@@ -19,7 +19,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from env import env
 from rl_brain import agent
-from rl_brain_v2 import DeepQNetwork
+from dqn import DeepQNetwork
 import datetime
 import os
 
