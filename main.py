@@ -25,7 +25,12 @@ if __name__ == "__main__":
         trainer.start(episode_list, data, logging  = 
                       True, env_debug = False, rl_debug = False,
                       brain=brain, ID = ID, model_based = model_based)
-    else: 
+    else:
+        
+        # TO DO: Brenton to add the citi_df as a parameter to trainer()
+        # i.e. trainer(citi_df)
+        # update the subsequent trainer init workflow
+        
         trainer_QLN = trainer()
         trainer_FCT = trainer()
         trainer_DQN = trainer()
