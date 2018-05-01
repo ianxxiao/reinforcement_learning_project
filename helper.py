@@ -26,7 +26,7 @@ def user_input():
     
     data = input("Linear, Random, or Actual?: ").lower()
     
-    ID = 392
+    ID = 497
     
     brain = input("Enter agent type (all, q or dqn): ").lower()
     
@@ -44,6 +44,7 @@ def user_input():
     
     if data == 'actual':
         station_history = citi_data_processing(ID)
+        print(station_history)
         
     else:
         station_history = None
@@ -90,25 +91,25 @@ def process_citibike(starting_bal):
     # Create hourly departure count by day across the month
     print("Calculating Departure and Arrivals ...")
         
-    monthDep = pd.pivot_table(bike[['start station id', 'day','start_hour']],
+    monthDep = pd.pivot_table(bike[['start station id', 'day','start_hour', 'starttime']],
                                      index = "start station id", columns = ['day', "start_hour"], 
                                      aggfunc = np.size, fill_value= 0).reset_index()
         
-    monthDep.columns = ["dep_" + str(day) + "_" + str(hour) for day, hour in monthDep.columns]
+    monthDep.columns = ["dep_" + str(day) + "_" + str(hour) for _, day, hour in monthDep.columns]
         
         
     # Create hourly arrival count by day across the month
 
-    monthArv = pd.pivot_table(bike[['end station id', 'day','end_hour']],
+    monthArv = pd.pivot_table(bike[['end station id', 'day','end_hour', 'stoptime']],
                                      index = "end station id", columns = ['day', "end_hour"], 
                                      aggfunc = np.size, fill_value= 0).reset_index()
         
-    monthArv.columns = ["arv_" + str(day) + "_" + str(hour) for day, hour in monthArv.columns]
+    monthArv.columns = ["arv_" + str(day) + "_" + str(hour) for _, day, hour in monthArv.columns]
         
     # Create a hourly net flow count by day across the month 
 
-    monthNet = uni_station.merge(monthDep, how = "left", left_on = "id", right_on = "dep_start station id_").\
-                              merge(monthArv, how = "left", left_on = "id", right_on = "arv_end station id_").fillna(0)
+    monthNet = uni_station.merge(monthDep, how = "left", left_on = "id", right_on = "dep__").\
+                              merge(monthArv, how = "left", left_on = "id", right_on = "arv__").fillna(0)
         
     for day in range(1, 31):
                 
