@@ -25,7 +25,7 @@ import os
 
 class trainer():
     
-    def __init__(self):
+    def __init__(self, station_history):
         
         # Session Properties
         self.episodes = []
@@ -39,6 +39,7 @@ class trainer():
         self.model_based = False
         self.ID = None
         self.method = None
+        self.station_history = station_history
         
         # Performance Metric
         self.success_ratio = 0
@@ -77,7 +78,8 @@ class trainer():
         for eps in self.episodes:
         
             # Initiate new evironment and RL agent
-            self.bike_station = env(self.stock_type, debug = self.env_debug, ID = self.ID)
+            self.bike_station = env(self.stock_type, debug = self.env_debug, ID = self.ID,
+                                    station_history = self.station_history)
             self.sim_stock.append(self.bike_station.get_sim_stock())
 
             if self.brain == 'q':

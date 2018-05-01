@@ -15,26 +15,24 @@ import helper
 if __name__ == "__main__":
 
     # Get Initial Parameters    
-    episode_list, data, ID, brain, model_based, citi_df = helper.user_input()
+    episode_list, data, ID, brain, model_based, station_history = helper.user_input()
 
 
     # Set Up a Training Environment
 
     if brain != 'all':
-        trainer = trainer()
+        trainer = trainer(station_history)
         trainer.start(episode_list, data, logging  = 
                       True, env_debug = False, rl_debug = False,
                       brain=brain, ID = ID, model_based = model_based)
     else:
         
-        # TO DO: Brenton to add the citi_df as a parameter to trainer()
-        # i.e. trainer(citi_df)
         # update the subsequent trainer init workflow
         # Run a end to end test
         
-        trainer_QLN = trainer()
-        trainer_FCT = trainer()
-        trainer_DQN = trainer()
+        trainer_QLN = trainer(station_history)
+        trainer_FCT = trainer(station_history)
+        trainer_DQN = trainer(station_history)
         
         trainer_QLN.start(episode_list, data, logging  = 
                       True, env_debug = False, rl_debug = False,
