@@ -3,8 +3,11 @@
 """
 Created on Sun Apr 29 17:44:36 2018
 
-@author: Ian
+@author: Ian, Brenton, Prince, Alex
 """
+
+import pandas as pd
+import numpy as np
 
 def user_input():
     
@@ -40,20 +43,134 @@ def user_input():
         model_based = False
     
     if data == 'actual':
-        citi_df = citi_data_processing()
+        station_history = citi_data_processing(ID)
         
     else:
-        citi_df = None
+        station_history = None
     
-    return episode_list, data, ID, brain, model_based, citi_df
+    return episode_list, data, ID, brain, model_based, station_history
 
 
-def citi_data_processing():
+def citi_data_processing(ID):
     
-    # TO DO: Brenton to add
+    citi_df = process_citibike(20)
+    station_history = list(np.array(citi_df[citi_df['id'] == ID])[0][4:28])
+    return station_history
+
+
+def process_citibike(starting_bal):
+        
+    # process real citi bike data from Sept 2017
+    # calculate bike stock based on inflow and outflow trips
+    # return a pandas dataframe of 
+        
+    print("Loading data from CitiBike...")
+    bike = pd.read_csv("https://s3.amazonaws.com/tripdata/201709-citibike-tripdata.csv.zip")
+    bike['starttime'] = pd.to_datetime(bike['starttime'], infer_datetime_format= True)
+    bike['stoptime'] = pd.to_datetime(bike['stoptime'], infer_datetime_format= True)
+        
+    bike['day'] = bike['starttime'].dt.day
+    bike['start_hour'] = bike['starttime'].dt.hour
+    bike['end_hour'] = bike['stoptime'].dt.hour
+    bike['DOW'] = bike['starttime'].dt.dayofweek
+        
+    # Create a dataset with all unique station id, name, and lat/lon
+        
+    uni_dep_stations = bike[['start station id', 'start station name', 
+                         'start station latitude', 'start station longitude']].drop_duplicates()
+
+    uni_arv_stations = bike[['end station id', 'end station name', 
+                                 'end station latitude', 'end station longitude']].drop_duplicates()
+        
+    uni_dep_stations.columns = ["id", "name", "lat", "lon"]
+    uni_arv_stations.columns = ["id", "name", "lat", "lon"]
+    uni_station = pd.concat([uni_dep_stations, uni_arv_stations], axis = 0).drop_duplicates()
+    uni_station.head()
+        
+    # Create hourly departure count by day across the month
+    print("Calculating Departure and Arrivals ...")
+        
+    monthDep = pd.pivot_table(bike[['start station id', 'day','start_hour']],
+                                     index = "start station id", columns = ['day', "start_hour"], 
+                                     aggfunc = np.size, fill_value= 0).reset_index()
+        
+    monthDep.columns = ["dep_" + str(day) + "_" + str(hour) for day, hour in monthDep.columns]
+        
+        
+    # Create hourly arrival count by day across the month
+
+    monthArv = pd.pivot_table(bike[['end station id', 'day','end_hour']],
+                                     index = "end station id", columns = ['day', "end_hour"], 
+                                     aggfunc = np.size, fill_value= 0).reset_index()
+        
+    monthArv.columns = ["arv_" + str(day) + "_" + str(hour) for day, hour in monthArv.columns]
+        
+    # Create a hourly net flow count by day across the month 
+
+    monthNet = uni_station.merge(monthDep, how = "left", left_on = "id", right_on = "dep_start station id_").\
+                              merge(monthArv, how = "left", left_on = "id", right_on = "arv_end station id_").fillna(0)
+        
+    for day in range(1, 31):
+                
+        for hour in range(0, 24):
+                
+            try:
+                net_col = "net_" + str(day) + "_" + str(hour)
+                dep_col = "dep_" + str(day) + "_" + str(hour)
+                arv_col = "arv_" + str(day) + "_" + str(hour)
+                monthNet[net_col] = monthNet[arv_col] - monthNet[dep_col]
+            except (KeyError):
+                print("Missing day: {} | Missing hour: {}".format(day, hour))
+                pass
+        
+    # Create a dataframe of bike stock amount based on starting balance
+    df_citibike = calHourlyBal(monthNet, starting_bal)
+        
+    return df_citibike
     
-    # Dummy Value for Testing
     
-    citi_df = None
     
-    return citi_df
+def calHourlyBal(df, starting_bal):
+        
+    print("Calculating Hourly Bike Stock for Each Station ...")
+    hourBal = df
+        
+    # Calculate hourly bike balance based on starting stock
+    for day in range(1, 31):
+        for hour in range(0, 24):
+            try:
+                    
+                if day == 1 and hour == 0:
+                    bal_col = "bal_1_0"
+                    hourBal["bal_1_0"] = starting_bal
+                        
+                elif day > 1 and hour == 0:
+                        
+                    bal_col = "bal_" + str(day) + "_" + str(hour)
+                    last_bal_col = "bal_" + str(day-1) + "_23"
+                    net_col = "net_" + str(day) + "_0"
+                        
+                    hourBal[bal_col] = hourBal[last_bal_col] + hourBal[net_col]
+                    
+                else:
+                        
+                    bal_col = "bal_" + str(day) + "_" + str(hour)
+                    last_bal_col = "bal_" + str(day) + "_" + str(hour-1)
+                    net_col = "net_" + str(day) + "_" + str(hour)
+                                            
+                    hourBal[bal_col] = hourBal[last_bal_col] + hourBal[net_col]
+                
+            except (KeyError) as ex:
+                # use previous balance for missing time slot
+                print("Missing net flow at day {} hour {}".format(day, hour))
+                    
+                #hourBal[bal_col] = hourBal[last_bal_col]
+                pass
+        
+    # Only keep balance and change columns
+    bal_col = hourBal.columns[hourBal.columns.str.contains("bal_")]
+    hourBal[bal_col] = hourBal[bal_col].astype('int')
+    final_bal = pd.concat([hourBal[["id", "name", "lat", "lon"]], hourBal[bal_col]], axis = 1) 
+        
+    return final_bal
+
