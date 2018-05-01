@@ -395,7 +395,7 @@ class trainer():
         for session in range(len(self.session_stock_history)):
             
             first_eps_idx = 0
-            last_eps_idx = len(self.session_action_history[session])-1
+            last_eps_idx = len(self.session_stock_history[session])-1
             
             fig = plt.figure(figsize=(10, 8))
             title = "[" + self.method + "]" + " Session " + str(session) + " - Original vs. Balanced Bike Stock after " + str(first_eps_idx) + " and Eps " + str(last_eps_idx)
