@@ -392,6 +392,34 @@ class trainer():
             os.makedirs(file_path)       
         
         
+        successful_stocking = self.cal_performance()
+        
+        # --- Write Success Rate to File ---
+        fname = dir_path + "/success_rate - " + timestamp + ".txt"
+        
+        with open(fname, 'w') as f:
+            
+            f.write("Logged at {}".format(self.get_timestamp(replace = False)))
+            f.write("\n")
+            f.write("This training session ran episodes: {}".format(self.episodes))
+            f.write("\n")
+        
+            for session in range(len(successful_stocking)):
+                f.write("Session {} | Episodes: {} | Success Rate: {:.2f}%".format(session, 
+                        self.episodes[session], successful_stocking[session]))
+                f.write("\n")
+
+            # --- Plot Overall Success Rate by Episode ---
+        
+        title = "% of Successful Rebalancing - " + timestamp
+        
+        fig1 = plt.figure()
+        plt.plot(self.episodes, successful_stocking)
+        plt.xlabel("Episodes")
+        plt.ylabel("% Success Rate")
+        plt.title(title)
+        fig1.savefig(dir_path + "/session_success_rate_" + timestamp)
+
         for session in range(len(self.session_stock_history)):
             
             first_eps_idx = 0
