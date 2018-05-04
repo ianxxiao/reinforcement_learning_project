@@ -310,6 +310,34 @@ class trainer():
             fig.savefig(dir_path + "/reward_history_session_" + \
                         str(session) + timestamp)
             
+        # --- Plot Average Reward History by Training Session ---
+        figR = plt.figure(figsize=[10, 8])
+        lengths = [len(r) for r in self.rewards]
+        means = [np.mean(r) for r in self.rewards]
+        if len(self.rewards) > 1:
+            increment = (lengths[1]-lengths[0])/20
+        else:
+            increment = lengths[0]/20
+
+        for reward_list in self.rewards:
+            Q3 = np.percentile(reward_list, 75)
+            Q1 = np.percentile(reward_list, 25)
+            M = np.mean(reward_list)
+            location = len(reward_list)
+            plt.plot([location-increment, location+increment], [Q1, Q1], 'k-')
+            plt.plot([location-increment, location+increment], [Q3, Q3], 'k-')
+            plt.plot([location, location], [Q1, Q3], 'k-')
+            plt.scatter(location, M, s=100, color='dodgerblue')           
+
+        plt.xlabel('Number of Episodes in Session')
+        plt.ylabel('Average Reward per Episode')
+        plt.title('Average Reward vs. Session Size', size=20)
+        plt.xticks(lengths)
+
+        plt.plot(lengths, means, linestyle='--')
+        
+        figR.savefig(dir_path + "/reward_averages")
+
         # --- Save Q tables --- 
         
         for session in range(len(self.q_tables)):
@@ -346,7 +374,7 @@ class trainer():
             fig.savefig(file_path + "/action_history_" + str(session) + timestamp)
         
         
-        # --- Comparison Line Chart of Simulated and Rebalaned Bike Stock --- #
+        # --- Comparison Line Chart of Simulated and Rebalanced Bike Stock --- #
         file_path = dir_path + "/stock_history"
         
         if not os.path.exists(file_path):

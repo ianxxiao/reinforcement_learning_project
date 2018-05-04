@@ -16,7 +16,7 @@ def user_input():
     user inputs.
     '''
     
-    episode_list = [eps for eps in range(100, 150, 100)]
+    episode_list = [eps for eps in range(100, 250, 100)]
     
     # ---- Bike Stock Parameters ----
     # linear: a linear increasing bike stock with 3 additional bikes per hour
