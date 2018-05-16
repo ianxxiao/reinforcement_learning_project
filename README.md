@@ -62,6 +62,10 @@ We measure if the computer agent can achieve the following without deliberate hu
     - -0.1 * number of bike removed at each hour
     - -20 if bike stock becomes negative at any given hour
 
+### High Level Architecture
+
+![image](/result_snapshot/Slide07.png)
+
 
 ### Results
 
@@ -84,46 +88,15 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 ---
 
-### What is in the development pipeline?
-- Generalize agent training to handle adding and removing bikes in a connected bike station network and traffic flow
-- Experiment with different reward structure and learning parameters to benchmark performances
-- Develop RNN and time series forecasting methods to improve and benchmark agent performance
+### Contributions
+- **Ian Xiao**: Overall solution design, development of base code, and integration and QA; Supported presentation and report writing.
 
----
+- **Alex Shannon**: Attempted to transfer training methods onto HPC to decrease training time; compiled literature review; reached out to Citibike for info regarding current distribution methods and the applicability of our approach; assisted with writing of report and presentation.
 
-### Overview of Technical Assets
+- **Prince Abunku**: Wrote the code for the Deep Q network, as well as the logging functions for this method. Assisted in writing the report and presentation.
 
-1) **main.py**
-This is the main workflow of initializing and training a RL agent and collecting analytics insights for debugging or reporting.
+- **Brenton Arnaboldi**: Built random forests model to predict a station’s hourly net flow; incorporated predictions into Q-Learning method (Q-Learning + Forecasting); assisted with writing of report and presentation.
 
-How to run: python main.py
-
-2) **env.py**
-This script is for creating an Environment class. Each environment represents
-a bike stateion with the following methods:
-    1) generate(): this initializes bike station with stock trend (e.g. linear, random, or based on real CitiBike history)
-    2) ping(): this provides feedback to RL Agent with current stock info, reward, and episode termination status; it also simulates the internal clock of different hours of the day
-    3) update_stock(): this updates the bike stock based on RL Agent Action
-    4) update_hour(): this updates the simulated hour of the day
-    5) reset(): reset all environment properties for new episode training
-
-3) **rl_brain.py**
-This script is for creating a RL agent class object. This object has the following methods:
-    
-    1) choose_action(): this choose an action based on Q(s,a) and greedy epsilon
-    2) learn(): this updates the Q(s,a) table
-    3) check_if_state_exist(): this check if a state exist based on environment feedback; create new state if it does not exist
-    4) print_q_table(): this prints the Q Table for debugging purposes
-    5) export_q_table(): this export the Q Table to a csv to a local folder
-    
-4) **training.py**
-This script is for creating a trainer class. It has the following methods:
-    1) start(): this initiate a training session with all necessary properties
-    2) train_operator(): this runs a training session with environment and RL agent objects
-    3) get_timestamp(): this returns a time stamp for logging purposes
-    4) cal_performance(): this calculates detailed performance metrics after each training session
-    5) save_session_results(): this saves all performance report assets
-    6) reset_episode_action_history: this is a helper function for performance tracking
 ---
 ### Literature Reference
 - Reinforcement Learning and Simulation-Based Search: http://www0.cs.ucl.ac.uk/staff/d.silver/web/Publications_files/thesis.pdf
