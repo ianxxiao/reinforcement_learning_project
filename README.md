@@ -1,9 +1,13 @@
-This README includes the following:
+This README includes the following high level information:
 - Project Overview
-- Preliminary Results (WIP, being updated actively)
-- Features under Development
-- Technical Asset Overview
-- Literature Reference
+- Solution Design
+- Results
+- Future Development Goals
+- Contributions
+
+For a short presentation of our project, please refer to [this document](/Reports/Presentation_Citibike Redistribution with Reinforcement Learning.pdf)
+
+For a detailed technical report with extensive discussion and results, please refer to [this document](/Reports/Citibike Redistribution with Reinforcement Learning.pdf)
 
 ---
 
@@ -102,8 +106,3 @@ We measure if the computer agent can achieve the following without deliberate hu
 - **Prince Abunku**: Wrote the code for the Deep Q network, as well as the logging functions for this method. Assisted in writing the report and presentation.
 
 - **Brenton Arnaboldi**: Built random forests model to predict a station’s hourly net flow; incorporated predictions into Q-Learning method (Q-Learning + Forecasting); assisted with writing of report and presentation.
-
----
-### Literature Reference
-- Reinforcement Learning and Simulation-Based Search: http://www0.cs.ucl.ac.uk/staff/d.silver/web/Publications_files/thesis.pdf
-- Optimizing value approximation: http://www0.cs.ucl.ac.uk/staff/d.silver/web/Publications_files/doubledqn.pdf
