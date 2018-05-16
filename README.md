@@ -1,24 +1,38 @@
-This README includes the following:
+This README includes the following high level information:
 - Project Overview
-- Preliminary Results (WIP, being updated actively)
-- Features under Development
-- Technical Asset Overview
-- Literature Reference
+- Solution Design
+- Results
+- Future Development Goals
+- Contributions
+
+For a short presentation of our project, please refer to [this document](/Reports/Presentation_Citibike Redistribution with Reinforcement Learning.pdf)
+
+For a detailed technical report with extensive discussion and results, please refer to [this document](/Reports/Citibike Redistribution with Reinforcement Learning.pdf)
 
 ---
 
-### What are we building?
+![image](/result_snapshot/Slide02.png)
 
-We are developing an AI "back-office operator" to balance bikes using Reinforcement Learning and CitiBike data without human knowledge and explicit programming. 
-
-### What is Reinforcement Learning?
-Reinforcement Learning (RL) program is the "brain" in Google's AlphaGo, Telsa's self-driving car, robots made by Boston Dynamics, and some automatic trading algorithms at Hedge Funds. It is the technique, and some said it is the true AI, that enables autonomous machines. There are various applications beyond the ones we mentioned. Large scale operations with complex constraints and changing conditions, such as Smart City operation and multi-channel digital marketing, are the ideal condidates. There are lots of untapped potentials to gain productivity and new human-manchine interaction in these domains.
-
-### How is bike balancing being done now?
 Bikes accumulate or deplete quickly at certain popular locations. Companies, such as CitiBike, spend lots of effort and money to manage bike stock at each station to ensure availability to riders throughout the day. Re-balancing is currently monitored and orchestrated by human based on conversation with citiBike frontline operators.
 
-### How do we envision bike balancing can be done?
-We aim to develop a computer agent that is able to understand 1) what the bike stock limit is and 2) decide how many bikes to move to where without hard coding any rules. The only thing we specify is the reward, which the agent will receive if it manages to keep the number of bikes to be less than 50 at the end of each day (23:00). The agent will also receive penalty based on the number of bikes it moves and if the number of bikes exceed 50.
+### What should the intelligent solution be able to do?
+We want the solution to be able to do the following: 
+- learn without explicit human instruction and intervention
+- continuous improvement over time
+- capture and adjust to complex and changing system dynamics
+
+
+### What is Reinforcement Learning and its applications?
+Reinforcement Learning (RL) is designed to let computors learn through reward and punishment, which is similar to how human learn. Some considered RL is the closest to real Artificial Intelligence.
+
+RL has been applied to many use cases, such as: 
+- Google's Alpha Go and energy saving solution at its data centers
+- Tesla's self-driving car
+- Boston Dynamics' Robots
+- algorithmic traders at hedge funds
+- personalized marketing at Jing Dong (the largest e-Commerce platform in China)
+
+There are various applications beyond the ones we mentioned. Large scale operations with complex constraints and changing conditions, such as Smart City operation and multi-channel digital marketing, are the ideal condidates. There are lots of untapped potentials to gain productivity and new human-manchine interaction in these domains.
 
 ### What will be the impact of our work?
 Hopefully the agent can be more precise, timely, and optimized than human agents. If we are successful, doing this may be one step closer to creating an "operational brain" for smart cities. Also, doing this is an attempt to apply Reinforcement Learning in large scale operational and public sector context, which is beyond games and finance.
@@ -36,7 +50,7 @@ We measure if the computer agent can achieve the following without deliberate hu
 - Can parallel learning (Asynchronous Advantaged Actor-Critic)  improve the speed and accuracy of operations in new dynamics?
 
 ---
-### Preliminary Results and Baseline
+### Design and Results
 
 **Terminology**
 - **Agent**: Reinforcement Learning object acting as a "bike re-balancing operator"
@@ -62,79 +76,33 @@ We measure if the computer agent can achieve the following without deliberate hu
     - -0.1 * number of bike removed at each hour
     - -20 if bike stock becomes negative at any given hour
 
-**Insight: The agent was able to recognize the 50 bike stock limit and manage stock effectively and cheaply after some training.** 
+### High Level Architecture
 
-The agent recognized the bike stock limit based on reward feedback from all training episodes, instead of having "visibility" to what the human programmer specified.
+![image](/result_snapshot/Slide07.png)
 
-![image](/result_snapshot/stock_history_120180308093154459029.png)
 
-![image](/result_snapshot/stock_history_220180310224621355239.png)
+![image](/result_snapshot/Slide08.png)
 
-**Figure 1-2**: Line chart comparisons of original hourly simulated stock without balancing, and balanced stocks after 1 or 150 training episodes. Figure 1 is an example of using a simple linear increasing bike stock; Figure 2 has a randomly generated bike stock.
+![image](/result_snapshot/Slide09.png)
 
-**Insight: The agent was able to manage bike stock better after more interactions with the environment.**
+![image](/result_snapshot/Slide10.png)
 
-![image](/result_snapshot/session_success_rate_2018-03-05101044410867.png)
+![image](/result_snapshot/Slide11.png)
 
-**Figure 2**: Comparison of success ratio as the number of training episode increases. The success ratio is defined as % of times when the agent limited bikes to be equal or less than 50. This is based on a simple linear bike stock simulation.
+![image](/result_snapshot/Slide12.png)
 
-**Insight: The agent became more "thoughtful" when moving bikes out of stations after learning from 1500 training episodes.**
+![image](/result_snapshot/Slide13.png)
 
-![image](/result_snapshot/action_history_220180305223236794486.png)
 
-**Figure 3**: Comparison of number of bikes moved in each hour between the first and last training episode
-
-**Insight: The agent chose actions based on a Q-Table it developed without explicit human programming. The Q-Table shows intuitive patterns (see explanation below).**
-
-Blue indicates relative high reward, red means lower reward. The agent would choose the action that could lead to the highest expected reward at a given state. States are in rows and it means the number of bikes a station holds in current hour. Actions are columns, the agent could only choose one of four pre-defined actions (e.g. moving -10, -3, -1, or 0 bikes) in this case. Expected future rewards are stored in the values.
-
-![image](/result_snapshot/q_table_explaination_20180306.png)
-
-**Figure 4**: A heatmap of expected future reward the agent developed after 98,000 trianing episodes. 
+![image](/result_snapshot/Slide14.png)
 
 ---
 
-### What is in the development pipeline?
-- Generalize agent training to handle adding and removing bikes in a connected bike station network and traffic flow
-- Experiment with different reward structure and learning parameters to benchmark performances
-- Develop RNN and time series forecasting methods to improve and benchmark agent performance
+### Contributions
+- **Ian Xiao**: Overall solution design, development of base code, and integration and QA; Supported presentation and report writing.
 
----
+- **Alex Shannon**: Attempted to transfer training methods onto HPC to decrease training time; compiled literature review; reached out to Citibike for info regarding current distribution methods and the applicability of our approach; assisted with writing of report and presentation.
 
-### Overview of Technical Assets
+- **Prince Abunku**: Wrote the code for the Deep Q network, as well as the logging functions for this method. Assisted in writing the report and presentation.
 
-1) **main.py**
-This is the main workflow of initializing and training a RL agent and collecting analytics insights for debugging or reporting.
-
-How to run: python main.py
-
-2) **env.py**
-This script is for creating an Environment class. Each environment represents
-a bike stateion with the following methods:
-    1) generate(): this initializes bike station with stock trend (e.g. linear, random, or based on real CitiBike history)
-    2) ping(): this provides feedback to RL Agent with current stock info, reward, and episode termination status; it also simulates the internal clock of different hours of the day
-    3) update_stock(): this updates the bike stock based on RL Agent Action
-    4) update_hour(): this updates the simulated hour of the day
-    5) reset(): reset all environment properties for new episode training
-
-3) **rl_brain.py**
-This script is for creating a RL agent class object. This object has the following methods:
-    
-    1) choose_action(): this choose an action based on Q(s,a) and greedy epsilon
-    2) learn(): this updates the Q(s,a) table
-    3) check_if_state_exist(): this check if a state exist based on environment feedback; create new state if it does not exist
-    4) print_q_table(): this prints the Q Table for debugging purposes
-    5) export_q_table(): this export the Q Table to a csv to a local folder
-    
-4) **training.py**
-This script is for creating a trainer class. It has the following methods:
-    1) start(): this initiate a training session with all necessary properties
-    2) train_operator(): this runs a training session with environment and RL agent objects
-    3) get_timestamp(): this returns a time stamp for logging purposes
-    4) cal_performance(): this calculates detailed performance metrics after each training session
-    5) save_session_results(): this saves all performance report assets
-    6) reset_episode_action_history: this is a helper function for performance tracking
----
-### Literature Reference
-- Reinforcement Learning and Simulation-Based Search: http://www0.cs.ucl.ac.uk/staff/d.silver/web/Publications_files/thesis.pdf
-- Optimizing value approximation: http://www0.cs.ucl.ac.uk/staff/d.silver/web/Publications_files/doubledqn.pdf
+- **Brenton Arnaboldi**: Built random forests model to predict a station’s hourly net flow; incorporated predictions into Q-Learning method (Q-Learning + Forecasting); assisted with writing of report and presentation.
