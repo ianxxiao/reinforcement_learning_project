@@ -40,7 +40,7 @@ We measure if the computer agent can achieve the following without deliberate hu
 - Can parallel learning (Asynchronous Advantaged Actor-Critic)  improve the speed and accuracy of operations in new dynamics?
 
 ---
-### Preliminary Results and Baseline
+### Design and Results
 
 **Terminology**
 - **Agent**: Reinforcement Learning object acting as a "bike re-balancing operator"
@@ -70,8 +70,6 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 ![image](/result_snapshot/Slide07.png)
 
-
-### Results
 
 ![image](/result_snapshot/Slide08.png)
 
