@@ -19,10 +19,15 @@ We want the solution to be able to do the following:
 - capture and adjust to complex and changing system dynamics
 
 
-### What is Reinforcement Learning?
-Reinforcement Learning (RL) program is the "brain" in Google's AlphaGo, Telsa's self-driving car, robots made by Boston Dynamics, and some automatic trading algorithms at Hedge Funds. It is the technique, and some said it is the true AI, that enables autonomous machines. There are various applications beyond the ones we mentioned. Large scale operations with complex constraints and changing conditions, such as Smart City operation and multi-channel digital marketing, are the ideal condidates. There are lots of untapped potentials to gain productivity and new human-manchine interaction in these domains.
+### What is Reinforcement Learning and its applications?
+Reinforcement Learning (RL) is designed to let computors learn through reward and punishment, which is similar to how human learn. RL has been applied to many use cases, which are considered to be, such as: 
+- Google's Alpha Go and energy saving solution at its data centers
+- Tesla's self-driving car
+- Boston Dynamics' Robots
+- algorithmic traders at hedge funds
+- personalized marketing at Jing Dong (the largest e-Commerce platform in China)
 
-RL is the best solution given our requirements.
+There are various applications beyond the ones we mentioned. Large scale operations with complex constraints and changing conditions, such as Smart City operation and multi-channel digital marketing, are the ideal condidates. There are lots of untapped potentials to gain productivity and new human-manchine interaction in these domains.
 
 ### What will be the impact of our work?
 Hopefully the agent can be more precise, timely, and optimized than human agents. If we are successful, doing this may be one step closer to creating an "operational brain" for smart cities. Also, doing this is an attempt to apply Reinforcement Learning in large scale operational and public sector context, which is beyond games and finance.
