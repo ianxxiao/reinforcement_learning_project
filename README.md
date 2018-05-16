@@ -5,9 +5,9 @@ This README includes the following high level information:
 - Future Development Goals
 - Contributions
 
-For a short presentation of our project, please refer to [this document](/Reports/Presentation_RL_citiBike_20180514.pdf)
+For a short presentation of our project, please refer to [this document](/Reports/Presentation_RL_citiBike_20180514.pdf).
 
-For a detailed technical write-up with extensive discussion and results, please refer to [this document](/Reports/Full_Report_RL_citiBike_20180514.pdf)
+For a detailed technical write-up with extensive discussion and results, please refer to [this document](/Reports/Full_Report_RL_citiBike_20180514.pdf).
 
 ---
 
