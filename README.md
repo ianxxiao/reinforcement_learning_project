@@ -6,7 +6,6 @@ This README includes the following:
 - Literature Reference
 
 ---
-### What is the problem?
 
 ![image](/result_snapshot/Slide02.png)
 
@@ -20,7 +19,9 @@ We want the solution to be able to do the following:
 
 
 ### What is Reinforcement Learning and its applications?
-Reinforcement Learning (RL) is designed to let computors learn through reward and punishment, which is similar to how human learn. RL has been applied to many use cases, which are considered to be, such as: 
+Reinforcement Learning (RL) is designed to let computors learn through reward and punishment, which is similar to how human learn. Some considered RL is the closest to real Artificial Intelligence.
+
+RL has been applied to many use cases, such as: 
 - Google's Alpha Go and energy saving solution at its data centers
 - Tesla's self-driving car
 - Boston Dynamics' Robots
