@@ -6,19 +6,23 @@ This README includes the following:
 - Literature Reference
 
 ---
+### What is the problem?
 
-### What are we building?
+![image](/result_snapshot/Slide02.png)
 
-We are developing an AI "back-office operator" to balance bikes using Reinforcement Learning and CitiBike data without human knowledge and explicit programming. 
+Bikes accumulate or deplete quickly at certain popular locations. Companies, such as CitiBike, spend lots of effort and money to manage bike stock at each station to ensure availability to riders throughout the day. Re-balancing is currently monitored and orchestrated by human based on conversation with citiBike frontline operators.
+
+### What should the intelligent solution be able to do?
+We want the solution to be able to do the following: 
+- learn without explicit human instruction and intervention
+- continuous improvement over time
+- capture and adjust to complex and changing system dynamics
+
 
 ### What is Reinforcement Learning?
 Reinforcement Learning (RL) program is the "brain" in Google's AlphaGo, Telsa's self-driving car, robots made by Boston Dynamics, and some automatic trading algorithms at Hedge Funds. It is the technique, and some said it is the true AI, that enables autonomous machines. There are various applications beyond the ones we mentioned. Large scale operations with complex constraints and changing conditions, such as Smart City operation and multi-channel digital marketing, are the ideal condidates. There are lots of untapped potentials to gain productivity and new human-manchine interaction in these domains.
 
-### How is bike balancing being done now?
-Bikes accumulate or deplete quickly at certain popular locations. Companies, such as CitiBike, spend lots of effort and money to manage bike stock at each station to ensure availability to riders throughout the day. Re-balancing is currently monitored and orchestrated by human based on conversation with citiBike frontline operators.
-
-### How do we envision bike balancing can be done?
-We aim to develop a computer agent that is able to understand 1) what the bike stock limit is and 2) decide how many bikes to move to where without hard coding any rules. The only thing we specify is the reward, which the agent will receive if it manages to keep the number of bikes to be less than 50 at the end of each day (23:00). The agent will also receive penalty based on the number of bikes it moves and if the number of bikes exceed 50.
+RL is the best solution given our requirements.
 
 ### What will be the impact of our work?
 Hopefully the agent can be more precise, timely, and optimized than human agents. If we are successful, doing this may be one step closer to creating an "operational brain" for smart cities. Also, doing this is an attempt to apply Reinforcement Learning in large scale operational and public sector context, which is beyond games and finance.
@@ -81,8 +85,6 @@ We measure if the computer agent can achieve the following without deliberate hu
 
 ![image](/result_snapshot/Slide13.png)
 
-
-### Next Steps
 
 ![image](/result_snapshot/Slide14.png)
 
