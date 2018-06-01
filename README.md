@@ -7,7 +7,7 @@ This README includes the following high level information:
 
 For a short presentation of our project, please refer to [this document](/Reports/Presentation_RL_citiBike_20180514.pdf).
 
-For a detailed technical write-up with extensive discussion and results, please refer to [this document](/Reports/Full_Report_RL_citiBike_20180514.pdf).
+For a technical write-up with detailed discussion and results, please refer to [this document](/Reports/Full_Report_RL_citiBike_20180514.pdf).
 
 If you are a business or technical manager, please refer to [this blog](https://towardsdatascience.com/ai-based-operation-learnings-for-business-and-technical-managers-3ec53e32b6a8) for lessons learned on business value and design considerations.
 
